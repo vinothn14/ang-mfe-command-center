@@ -1,0 +1,52 @@
+{
+  "name": "angular-mfe-command-center",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Enterprise-grade Angular 22 Micro-Frontend Command Center with Native Federation, Signals, and Nx",
+  "scripts": {
+    "start:shell": "nx serve shell --port 4200",
+    "start:remote-tasks": "nx serve remote-tasks --port 4201",
+    "start:all": "nx run-many -t serve -p shell remote-tasks --parallel=2",
+    "build:shell": "nx build shell",
+    "build:remote-tasks": "nx build remote-tasks",
+    "build:all": "nx run-many -t build --all",
+    "test:all": "nx run-many -t test --all",
+    "lint:all": "nx run-many -t lint --all",
+    "format": "prettier --write \"**/*.{ts,html,scss,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,html,scss,json,md}\""
+  },
+  "dependencies": {
+    "@angular/animations": "~22.2.0",
+    "@angular/common": "~22.2.0",
+    "@angular/compiler": "~22.2.0",
+    "@angular/core": "~22.2.0",
+    "@angular/forms": "~22.2.0",
+    "@angular/platform-browser": "~22.2.0",
+    "@angular/platform-browser-dynamic": "~22.2.0",
+    "@angular/router": "~22.2.0",
+    "@angular-architects/native-federation": "^22.2.5",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.6.2",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.9.7",
+    "@angular/build": "~22.2.0",
+    "@angular/cli": "~22.2.0",
+    "@angular/compiler-cli": "~22.2.0",
+    "@nx/angular": "^24.0.0",
+    "@nx/js": "^24.0.0",
+    "@nx/vite": "^24.0.0",
+    "@nx/vitest": "^24.0.0",
+    "@nx/workspace": "^24.0.0",
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.25.0",
+    "jsdom": "^26.0.0",
+    "nx": "^24.0.0",
+    "prettier": "^3.5.0",
+    "typescript": "~6.0.0",
+    "vite": "^6.1.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.8"
+  }
+}

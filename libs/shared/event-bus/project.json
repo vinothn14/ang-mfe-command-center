@@ -1,0 +1,22 @@
+{
+  "name": "shared-event-bus",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/event-bus/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:event-bus"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{workspaceRoot}/coverage/libs/shared/event-bus"],
+      "options": {
+        "config": "libs/shared/event-bus/vite.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "prettier --check libs/shared/event-bus/**/*.{ts,json}"
+      }
+    }
+  }
+}
