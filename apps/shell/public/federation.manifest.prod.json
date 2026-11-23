@@ -1,0 +1,5 @@
+{
+  "remote-tasks": "https://mfe-remote-tasks.netlify.app/remoteEntry.json",
+  "remote-analytics": "https://mfe-remote-analytics.netlify.app/remoteEntry.json",
+  "remote-settings": "https://mfe-remote-settings.netlify.app/remoteEntry.json"
+}

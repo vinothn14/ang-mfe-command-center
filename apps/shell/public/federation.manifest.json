@@ -1,3 +1,5 @@
 {
-  "remote-tasks": "http://localhost:4201/remoteEntry.json"
+  "remote-tasks": "http://localhost:4201/remoteEntry.json",
+  "remote-analytics": "http://localhost:4202/remoteEntry.json",
+  "remote-settings": "http://localhost:4203/remoteEntry.json"
 }
