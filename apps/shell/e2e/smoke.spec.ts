@@ -37,9 +37,11 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     expect(toggledTheme).not.toBe(initialTheme);
   });
 
-  test('displays graceful fallback UI when a remote is unavailable or fails to load', async ({ page }) => {
+  test('displays graceful fallback UI when a remote is unavailable or fails to load', async ({
+    page,
+  }) => {
     // Intercept remoteEntry request and simulate offline / network failure
-    await page.route('**/remoteEntry.json', (route) => {
+    await page.route('**/remoteEntry.json', route => {
       route.abort('failed');
     });
 
