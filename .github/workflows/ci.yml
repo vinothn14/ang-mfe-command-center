@@ -1,0 +1,45 @@
+name: CI (Nx Affected)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint, Test & Build (Nx Affected)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Derive SHAs for Nx Affected
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Format check
+        run: npx prettier --check "**/*.{ts,html,scss,json,md}"
+
+      - name: Run Lint on affected projects
+        run: npx nx affected -t lint
+
+      - name: Run Vitest Unit Tests on affected projects
+        run: npx nx affected -t test --coverage
+
+      - name: Build affected micro-frontends and libraries
+        run: npx nx affected -t build
