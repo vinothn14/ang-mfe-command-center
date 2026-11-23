@@ -94,7 +94,7 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "prettier --check apps/remote-tasks/**/*.{ts,html,scss,json}"
+        "command": "eslint apps/remote-tasks"
       }
     }
   }

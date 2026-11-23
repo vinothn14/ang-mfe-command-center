@@ -16,6 +16,7 @@
     "format:check": "prettier --check \"**/*.{ts,html,scss,json,md}\""
   },
   "dependencies": {
+    "@angular-architects/native-federation": "^22.2.5",
     "@angular/animations": "~22.2.0",
     "@angular/common": "~22.2.0",
     "@angular/compiler": "~22.2.0",
@@ -24,7 +25,6 @@
     "@angular/platform-browser": "~22.2.0",
     "@angular/platform-browser-dynamic": "~22.2.0",
     "@angular/router": "~22.2.0",
-    "@angular-architects/native-federation": "^22.2.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.2",
     "zone.js": "~0.15.0"
@@ -34,12 +34,17 @@
     "@angular/build": "~22.2.0",
     "@angular/cli": "~22.2.0",
     "@angular/compiler-cli": "~22.2.0",
+    "@eslint/js": "^10.0.1",
     "@nx/angular": "^24.0.0",
+    "@nx/eslint": "^24.0.0",
+    "@nx/eslint-plugin": "^24.0.0",
     "@nx/js": "^24.0.0",
     "@nx/vite": "^24.0.0",
     "@nx/vitest": "^24.0.0",
     "@nx/workspace": "^24.0.0",
+    "@playwright/test": "^1.50.0",
     "@types/node": "^22.10.0",
+    "angular-eslint": "^22.8.0",
     "esbuild": "^0.25.0",
     "jsdom": "^26.0.0",
     "nx": "^24.0.0",

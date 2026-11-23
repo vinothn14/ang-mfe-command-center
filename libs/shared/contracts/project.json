@@ -8,7 +8,7 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "prettier --check libs/shared/contracts/**/*.{ts,json}"
+        "command": "eslint libs/shared/contracts"
       }
     }
   }

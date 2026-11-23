@@ -100,7 +100,7 @@
     "lint": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "prettier --check apps/shell/**/*.{ts,html,scss,json}"
+        "command": "eslint apps/shell"
       }
     }
   }
