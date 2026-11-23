@@ -1,4 +1,4 @@
-import { withNativeFederation, shareAll } from '@angular-architects/native-federation/config';
+import { withNativeFederation, shareAll, share } from '@angular-architects/native-federation/config';
 
 export default withNativeFederation({
   name: 'remote-tasks',
@@ -13,14 +13,26 @@ export default withNativeFederation({
       requiredVersion: 'auto',
       includeSecondaries: true,
     }),
+    ...share({
+      '@mfe/shared/event-bus': {
+        singleton: true,
+        strictVersion: false,
+        requiredVersion: 'auto',
+      },
+      '@mfe/shared/contracts': {
+        singleton: true,
+        strictVersion: false,
+        requiredVersion: 'auto',
+      },
+      '@mfe/shared/ui-tokens': {
+        singleton: true,
+        strictVersion: false,
+        requiredVersion: 'auto',
+      },
+    }),
   },
   features: {
     denseExternals: true,
   },
-  skip: [
-    'rxjs/ajax',
-    'rxjs/fetch',
-    'rxjs/testing',
-    'rxjs/webSocket',
-  ],
+  skip: ['rxjs/ajax', 'rxjs/fetch', 'rxjs/testing', 'rxjs/webSocket'],
 });

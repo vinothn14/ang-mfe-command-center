@@ -9,36 +9,17 @@ interface BusEnvelope<K extends EventKey = EventKey> {
   timestamp: number;
 }
 
-declare global {
-  interface Window {
-    __MFE_GLOBAL_EVENT_BUS__?: Subject<BusEnvelope<any>>;
-  }
-}
-
 /**
  * Enterprise Micro-Frontend Cross-Remote Typed Event Bus.
  *
  * Implements a decoupled pub/sub pattern across runtime MFEs.
- * Guarantees cross-bundle message transmission even if bundling
- * boundaries duplicate the service class in memory (via window singleton bridge).
+ * Shared as a strict singleton via Native Federation ESM import maps.
  */
 @Injectable({
   providedIn: 'root',
 })
 export class EventBusService {
-  private readonly stream$: Subject<BusEnvelope<any>>;
-
-  constructor() {
-    // Enterprise bridge: ensure single shared stream across all remotes and host
-    if (typeof window !== 'undefined') {
-      if (!window.__MFE_GLOBAL_EVENT_BUS__) {
-        window.__MFE_GLOBAL_EVENT_BUS__ = new Subject<BusEnvelope<any>>();
-      }
-      this.stream$ = window.__MFE_GLOBAL_EVENT_BUS__;
-    } else {
-      this.stream$ = new Subject<BusEnvelope<any>>();
-    }
-  }
+  private readonly stream$ = new Subject<BusEnvelope<any>>();
 
   /**
    * Dispatches a strongly-typed event onto the bus.

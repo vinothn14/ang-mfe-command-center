@@ -6,10 +6,6 @@ describe('EventBusService', () => {
   let eventBus: EventBusService;
 
   beforeEach(() => {
-    // Reset global state for test isolation
-    if (typeof window !== 'undefined') {
-      delete (window as any).__MFE_GLOBAL_EVENT_BUS__;
-    }
     eventBus = new EventBusService();
   });
 
