@@ -1,0 +1,197 @@
+<div class="settings-wrapper">
+  <!-- MFE Context Header -->
+  <div class="mfe-banner">
+    <div class="mfe-banner-left">
+      <span class="mfe-pill">Remote Micro-Frontend</span>
+      <span class="mfe-id">apps/remote-settings (Port 4203)</span>
+    </div>
+    <div class="mfe-banner-right">
+      <span>Signal-Based Form</span>
+      <span class="dot"></span>
+      <span>Event-Bus Theme Sync</span>
+    </div>
+  </div>
+
+  <div class="settings-header">
+    <h2>Environment & User Preferences</h2>
+    <p>Manage workspace identity, notification preferences, and global command center themes.</p>
+  </div>
+
+  <form (submit)="save(); $event.preventDefault()" class="settings-form-layout">
+    <!-- Section 1: Profile & Identity -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </div>
+        <div>
+          <h3>Profile & Security Role</h3>
+          <p class="sub">Identity derived from shared auth contract</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Full Name</label>
+          <input
+            type="text"
+            [value]="store.name()"
+            (input)="store.name.set($any($event.target).value)"
+            placeholder="Your name"
+          />
+        </div>
+
+        <div class="form-field">
+          <label>Email Address</label>
+          <input
+            type="email"
+            [value]="store.email()"
+            (input)="store.email.set($any($event.target).value)"
+            placeholder="Your email"
+          />
+        </div>
+
+        <div class="form-field full-width">
+          <label>Organization / Team</label>
+          <input
+            type="text"
+            [value]="store.organization()"
+            (input)="store.organization.set($any($event.target).value)"
+            placeholder="Command Center Core Team"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Global Theme Engine (Event Bus Synced) -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="header-icon theme-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+        </div>
+        <div>
+          <h3>Theme Preference</h3>
+          <p class="sub">Toggling propagates immediately to the Shell via EventBus</p>
+        </div>
+      </div>
+
+      <div class="theme-selector-grid">
+        <button
+          type="button"
+          class="theme-card"
+          [class.selected]="store.theme() === 'dark'"
+          (click)="onThemeSelect('dark')"
+        >
+          <div class="theme-preview dark-preview">
+            <div class="preview-header"></div>
+            <div class="preview-body"></div>
+          </div>
+          <span class="theme-title">Dark Mode</span>
+          <span class="theme-desc">High contrast dark surface (Default)</span>
+        </button>
+
+        <button
+          type="button"
+          class="theme-card"
+          [class.selected]="store.theme() === 'light'"
+          (click)="onThemeSelect('light')"
+        >
+          <div class="theme-preview light-preview">
+            <div class="preview-header"></div>
+            <div class="preview-body"></div>
+          </div>
+          <span class="theme-title">Light Mode</span>
+          <span class="theme-desc">Clean bright canvas</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Section 3: Notification Preferences -->
+    <div class="settings-card">
+      <div class="card-header">
+        <div class="header-icon notif-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 01-3.46 0" />
+          </svg>
+        </div>
+        <div>
+          <h3>Event Notifications</h3>
+          <p class="sub">Configure inter-remote dispatch alerts</p>
+        </div>
+      </div>
+
+      <div class="toggle-list">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-label">Task Status Transition Alerts</span>
+            <span class="toggle-desc">Trigger notification when tasks move to Done</span>
+          </div>
+          <button
+            type="button"
+            class="toggle-switch"
+            [class.on]="store.notifications().emailAlerts"
+            (click)="store.toggleNotification('emailAlerts')"
+          >
+            <span class="switch-handle"></span>
+          </button>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-label">Daily Sprint Summary Digest</span>
+            <span class="toggle-desc">Aggregated metrics email every morning</span>
+          </div>
+          <button
+            type="button"
+            class="toggle-switch"
+            [class.on]="store.notifications().slackDigest"
+            (click)="store.toggleNotification('slackDigest')"
+          >
+            <span class="switch-handle"></span>
+          </button>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-label">System Auditory Cues</span>
+            <span class="toggle-desc">Subtle sound feedback on successful remote loading</span>
+          </div>
+          <button
+            type="button"
+            class="toggle-switch"
+            [class.on]="store.notifications().statusSound"
+            (click)="store.toggleNotification('statusSound')"
+          >
+            <span class="switch-handle"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions & Feedback -->
+    <div class="form-actions">
+      @if (store.isSaved()) {
+        <span class="save-toast">
+          ✓ Preferences saved & theme broadcasted across EventBus!
+        </span>
+      }
+      <button type="submit" class="btn btn-primary">
+        Save Preferences
+      </button>
+    </div>
+  </form>
+</div>
