@@ -4,6 +4,9 @@
     <div class="mfe-banner-left">
       <span class="mfe-pill">Remote Micro-Frontend</span>
       <span class="mfe-id">apps/remote-tasks (Port 4201)</span>
+      @if (isReadOnly()) {
+        <span class="mfe-pill readonly-pill">Read-Only (Viewer Role)</span>
+      }
     </div>
     <div class="mfe-banner-right">
       <span>Signals State Machine</span>
@@ -68,13 +71,19 @@
       }
     </div>
 
-    <button class="btn btn-add" (click)="openModal()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="5" y1="12" x2="19" y2="12" />
-      </svg>
-      <span>New Task</span>
-    </button>
+    @if (!isReadOnly()) {
+      <button class="btn btn-add" (click)="openModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        <span>New Task</span>
+      </button>
+    } @else {
+      <div class="readonly-badge" title="Viewer role cannot create or modify tasks">
+        🔒 Viewing Mode
+      </div>
+    }
   </div>
 
   <!-- Kanban Columns Grid -->
@@ -94,10 +103,7 @@
         } @else {
           @for (task of store.todo(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="
-                taskCard;
-                context: { $implicit: task, canBack: false, canForward: true }
-              "
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: false, canForward: !isReadOnly() }"
             ></ng-container>
           }
         }
@@ -119,10 +125,7 @@
         } @else {
           @for (task of store.inProgress(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="
-                taskCard;
-                context: { $implicit: task, canBack: true, canForward: true }
-              "
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: !isReadOnly(), canForward: !isReadOnly() }"
             ></ng-container>
           }
         }
@@ -144,10 +147,7 @@
         } @else {
           @for (task of store.review(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="
-                taskCard;
-                context: { $implicit: task, canBack: true, canForward: true }
-              "
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: !isReadOnly(), canForward: !isReadOnly() }"
             ></ng-container>
           }
         }
@@ -169,10 +169,7 @@
         } @else {
           @for (task of store.done(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="
-                taskCard;
-                context: { $implicit: task, canBack: true, canForward: false }
-              "
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: !isReadOnly(), canForward: false }"
             ></ng-container>
           }
         }
@@ -203,29 +200,25 @@
           <span class="assignee-name">{{ task.assignee.name }}</span>
         </div>
 
-        <div class="card-actions">
-          @if (canBack) {
-            <button
-              class="nav-btn"
-              (click)="moveTask(task.id, 'backward')"
-              title="Move to previous column"
-            >
-              ◀
-            </button>
-          }
+        @if (!isReadOnly()) {
+          <div class="card-actions">
+            @if (canBack) {
+              <button class="nav-btn" (click)="moveTask(task.id, 'backward')" title="Move to previous column">
+                ◀
+              </button>
+            }
 
-          <button class="delete-btn" (click)="deleteTask(task.id)" title="Delete task">🗑</button>
-
-          @if (canForward) {
-            <button
-              class="nav-btn"
-              (click)="moveTask(task.id, 'forward')"
-              title="Advance to next column"
-            >
-              ▶
+            <button class="delete-btn" (click)="deleteTask(task.id)" title="Delete task">
+              🗑
             </button>
-          }
-        </div>
+
+            @if (canForward) {
+              <button class="nav-btn" (click)="moveTask(task.id, 'forward')" title="Advance to next column">
+                ▶
+              </button>
+            }
+          </div>
+        }
       </div>
     </div>
   </ng-template>

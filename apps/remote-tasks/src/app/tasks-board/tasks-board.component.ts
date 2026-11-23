@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskStoreService } from './task-store.service';
-import { TaskItem, TaskPriority } from '@mfe/shared/contracts';
+import { AUTH_READER_TOKEN, TaskItem, TaskPriority } from '@mfe/shared/contracts';
 
 @Component({
   selector: 'mfe-tasks-board',
@@ -13,6 +13,11 @@ import { TaskItem, TaskPriority } from '@mfe/shared/contracts';
 })
 export class TasksBoardComponent {
   readonly store = inject(TaskStoreService);
+  readonly authReader = inject(AUTH_READER_TOKEN, { optional: true });
+
+  readonly isReadOnly = computed<boolean>(() => {
+    return this.authReader ? this.authReader.isViewer() : false;
+  });
 
   readonly showAddModal = signal(false);
 
@@ -23,6 +28,7 @@ export class TasksBoardComponent {
   newTagsString = '';
 
   openModal(): void {
+    if (this.isReadOnly()) return;
     this.newTitle = '';
     this.newDescription = '';
     this.newPriority = 'medium';
@@ -35,7 +41,7 @@ export class TasksBoardComponent {
   }
 
   submitNewTask(): void {
-    if (!this.newTitle.trim()) return;
+    if (this.isReadOnly() || !this.newTitle.trim()) return;
 
     const tags = this.newTagsString
       .split(',')
@@ -53,10 +59,12 @@ export class TasksBoardComponent {
   }
 
   moveTask(taskId: string, direction: 'forward' | 'backward'): void {
+    if (this.isReadOnly()) return;
     this.store.moveTask(taskId, direction);
   }
 
   deleteTask(taskId: string): void {
+    if (this.isReadOnly()) return;
     this.store.deleteTask(taskId);
   }
 

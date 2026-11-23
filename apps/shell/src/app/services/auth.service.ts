@@ -1,17 +1,28 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { AuthState, INITIAL_AUTH_STATE, User } from '@mfe/shared/contracts';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import {
+  AuthReader,
+  AuthState,
+  INITIAL_AUTH_STATE,
+  UserRole,
+  canAccessSettings,
+  canModifyTasks,
+} from '@mfe/shared/contracts';
 import { EventBusService } from '@mfe/shared/event-bus';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements AuthReader {
   private readonly eventBus = inject(EventBusService);
 
   readonly authState = signal<AuthState>(INITIAL_AUTH_STATE);
 
+  readonly role = computed<UserRole>(() => this.authState().user?.role || 'viewer');
+  readonly isViewer = computed<boolean>(() => this.role() === 'viewer');
+  readonly canModifyTasks = computed<boolean>(() => canModifyTasks(this.role()));
+  readonly canAccessSettings = computed<boolean>(() => canAccessSettings(this.role()));
+
   constructor() {
-    // Initial broadcast to event bus so remotes have auth on boot
     this.eventBus.dispatch('auth:state-changed', this.authState());
   }
 
@@ -36,14 +47,21 @@ export class AuthService {
     this.eventBus.dispatch('auth:state-changed', state);
   }
 
-  switchRole(role: User['role']): void {
+  switchRole(role: UserRole): void {
     const current = this.authState();
-    if (!current.user) return;
+    if (!current.user) {
+      if (role !== 'viewer') {
+        this.login();
+        this.switchRole(role);
+      }
+      return;
+    }
 
-    const updatedUser: User = { ...current.user, role };
+    const updatedUser = { ...current.user, role };
     const updatedState: AuthState = { ...current, user: updatedUser };
 
     this.authState.set(updatedState);
     this.eventBus.dispatch('auth:state-changed', updatedState);
+    this.eventBus.dispatch('auth:role-switched', role);
   }
 }

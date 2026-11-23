@@ -32,6 +32,12 @@
       background: var(--color-brand-glow);
       color: var(--color-brand-primary);
       border: 1px solid rgba(59, 130, 246, 0.3);
+
+      &.readonly-pill {
+        background: var(--color-warning-bg);
+        color: var(--color-warning);
+        border-color: rgba(245, 158, 11, 0.3);
+      }
     }
 
     .mfe-id {
@@ -216,6 +222,18 @@
       background: var(--color-brand-primary-hover);
       box-shadow: 0 4px 12px var(--color-brand-glow);
     }
+  }
+
+  .readonly-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
   }
 }
 
