@@ -17,7 +17,9 @@ export class SettingsStoreService {
 
   // Signal-based form state
   readonly name = signal(this.authReader?.authState().user?.name || 'Alex Rivera');
-  readonly email = signal(this.authReader?.authState().user?.email || 'alex.rivera@enterprise-mfe.io');
+  readonly email = signal(
+    this.authReader?.authState().user?.email || 'alex.rivera@enterprise-mfe.io',
+  );
   readonly organization = signal('Command Center Core Team');
   readonly theme = signal<'light' | 'dark'>('dark');
   readonly notifications = signal<NotificationSettings>({

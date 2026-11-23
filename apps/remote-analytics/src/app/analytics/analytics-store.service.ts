@@ -109,10 +109,7 @@ export class AnalyticsStoreService implements OnDestroy {
         if (event.newStatus === 'done') {
           this.throughput.update(list => {
             const last = list[list.length - 1];
-            return [
-              ...list.slice(0, -1),
-              { ...last, completed: last.completed + 1 },
-            ];
+            return [...list.slice(0, -1), { ...last, completed: last.completed + 1 }];
           });
         }
 

@@ -9,9 +9,7 @@ const isLocalhost =
     window.location.hostname === '127.0.0.1' ||
     window.location.hostname.endsWith('.local'));
 
-const manifestEndpoint = isLocalhost
-  ? 'federation.manifest.json'
-  : 'federation.manifest.prod.json';
+const manifestEndpoint = isLocalhost ? 'federation.manifest.json' : 'federation.manifest.prod.json';
 
 initFederation(manifestEndpoint)
   .catch(err => {

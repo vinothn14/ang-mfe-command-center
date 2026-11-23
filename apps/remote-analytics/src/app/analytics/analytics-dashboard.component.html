@@ -16,7 +16,9 @@
   <div class="dashboard-header">
     <div class="header-intro">
       <h2>Engineering Throughput & Analytics</h2>
-      <p>Real-time telemetry and throughput charts reacting directly to cross-remote task events.</p>
+      <p>
+        Real-time telemetry and throughput charts reacting directly to cross-remote task events.
+      </p>
     </div>
 
     <div class="kpi-grid">
@@ -34,7 +36,9 @@
       </div>
       <div class="kpi-card">
         <span class="kpi-label">Active Work</span>
-        <span class="kpi-value warning">{{ store.statusCounts().in_progress + store.statusCounts().review }} WIP</span>
+        <span class="kpi-value warning"
+          >{{ store.statusCounts().in_progress + store.statusCounts().review }} WIP</span
+        >
       </div>
     </div>
   </div>
@@ -81,12 +85,7 @@
                 {{ item.completed }}
               </text>
               <!-- X-Axis Label -->
-              <text
-                [attr.x]="94 + idx * 95"
-                y="190"
-                text-anchor="middle"
-                class="axis-text"
-              >
+              <text [attr.x]="94 + idx * 95" y="190" text-anchor="middle" class="axis-text">
                 {{ item.week }}
               </text>
             </g>
@@ -95,7 +94,10 @@
       </div>
 
       <div class="chart-footer">
-        <span class="hint">💡 Moving tasks to Completed in <strong>remote-tasks</strong> increments this sprint velocity in real time.</span>
+        <span class="hint"
+          >💡 Moving tasks to Completed in <strong>remote-tasks</strong> increments this sprint
+          velocity in real time.</span
+        >
       </div>
     </div>
 

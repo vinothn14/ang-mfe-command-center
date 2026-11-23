@@ -32,6 +32,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
 
     this.sub.add(
+      this.eventBus.on('settings:theme-changed').subscribe(e => {
+        this.addLog(
+          'settings:theme-changed',
+          `Theme changed by "${e.updatedBy}" to [${e.theme}] via remote-settings`,
+        );
+      }),
+    );
+
+    this.sub.add(
       this.eventBus.on('auth:state-changed').subscribe(auth => {
         this.addLog(
           'auth:state-changed',

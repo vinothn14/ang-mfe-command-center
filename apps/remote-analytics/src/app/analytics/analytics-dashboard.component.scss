@@ -197,7 +197,9 @@
 
         .bar-rect {
           fill: var(--color-brand-primary);
-          transition: fill 0.2s ease, transform 0.2s ease;
+          transition:
+            fill 0.2s ease,
+            transform 0.2s ease;
 
           &:hover {
             fill: var(--color-brand-primary-hover);

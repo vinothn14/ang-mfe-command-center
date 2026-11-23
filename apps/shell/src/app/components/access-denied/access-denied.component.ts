@@ -21,9 +21,8 @@ import { AuthService } from '../../services/auth.service';
         <h2>Access Denied</h2>
         <p class="desc">
           Your current session role is
-          <strong class="role-badge">{{ auth.role() }}</strong
-          >. The requested micro-frontend module requires elevated permissions (architect, admin,
-          or developer).
+          <strong class="role-badge">{{ auth.role() }}</strong>. The requested micro-frontend module
+          requires elevated permissions (architect, admin, or developer).
         </p>
 
         <div class="guidance-box">

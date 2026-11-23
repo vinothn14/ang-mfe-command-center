@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { RemoteLoaderComponent } from './components/remote-loader/remote-loader.component';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { settingsRoleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -18,12 +20,35 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'missing-remote',
+    path: 'analytics',
     component: RemoteLoaderComponent,
     data: {
       remoteName: 'remote-analytics',
       exposedModule: './Component',
       remoteUrl: 'http://localhost:4202/remoteEntry.json',
+    },
+  },
+  {
+    path: 'settings',
+    component: RemoteLoaderComponent,
+    canActivate: [settingsRoleGuard],
+    data: {
+      remoteName: 'remote-settings',
+      exposedModule: './Component',
+      remoteUrl: 'http://localhost:4203/remoteEntry.json',
+    },
+  },
+  {
+    path: 'access-denied',
+    component: AccessDeniedComponent,
+  },
+  {
+    path: 'missing-remote',
+    component: RemoteLoaderComponent,
+    data: {
+      remoteName: 'remote-billing',
+      exposedModule: './Component',
+      remoteUrl: 'http://localhost:4299/remoteEntry.json',
     },
   },
   {
