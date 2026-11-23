@@ -4,10 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   root: __dirname,
-  plugins: [
-    angular(),
-    tsconfigPaths({ root: '../../' }),
-  ],
+  plugins: [angular(), tsconfigPaths({ root: '../../' })],
   test: {
     globals: true,
     environment: 'jsdom',

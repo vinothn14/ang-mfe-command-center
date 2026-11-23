@@ -94,7 +94,10 @@
         } @else {
           @for (task of store.todo(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: false, canForward: true }"
+              *ngTemplateOutlet="
+                taskCard;
+                context: { $implicit: task, canBack: false, canForward: true }
+              "
             ></ng-container>
           }
         }
@@ -116,7 +119,10 @@
         } @else {
           @for (task of store.inProgress(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: true, canForward: true }"
+              *ngTemplateOutlet="
+                taskCard;
+                context: { $implicit: task, canBack: true, canForward: true }
+              "
             ></ng-container>
           }
         }
@@ -138,7 +144,10 @@
         } @else {
           @for (task of store.review(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: true, canForward: true }"
+              *ngTemplateOutlet="
+                taskCard;
+                context: { $implicit: task, canBack: true, canForward: true }
+              "
             ></ng-container>
           }
         }
@@ -160,7 +169,10 @@
         } @else {
           @for (task of store.done(); track task.id) {
             <ng-container
-              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: true, canForward: false }"
+              *ngTemplateOutlet="
+                taskCard;
+                context: { $implicit: task, canBack: true, canForward: false }
+              "
             ></ng-container>
           }
         }
@@ -193,17 +205,23 @@
 
         <div class="card-actions">
           @if (canBack) {
-            <button class="nav-btn" (click)="moveTask(task.id, 'backward')" title="Move to previous column">
+            <button
+              class="nav-btn"
+              (click)="moveTask(task.id, 'backward')"
+              title="Move to previous column"
+            >
               ◀
             </button>
           }
 
-          <button class="delete-btn" (click)="deleteTask(task.id)" title="Delete task">
-            🗑
-          </button>
+          <button class="delete-btn" (click)="deleteTask(task.id)" title="Delete task">🗑</button>
 
           @if (canForward) {
-            <button class="nav-btn" (click)="moveTask(task.id, 'forward')" title="Advance to next column">
+            <button
+              class="nav-btn"
+              (click)="moveTask(task.id, 'forward')"
+              title="Advance to next column"
+            >
               ▶
             </button>
           }

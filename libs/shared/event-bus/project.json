@@ -6,10 +6,10 @@
   "tags": ["scope:shared", "type:event-bus"],
   "targets": {
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/libs/shared/event-bus"],
       "options": {
-        "config": "libs/shared/event-bus/vite.config.ts"
+        "command": "vitest run --config libs/shared/event-bus/vite.config.ts"
       }
     },
     "lint": {

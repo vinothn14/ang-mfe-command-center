@@ -33,15 +33,19 @@
         "tsConfig": "apps/remote-tasks/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [],
-        "styles": [
-          "libs/shared/ui-tokens/src/tokens.scss",
-          "apps/remote-tasks/src/styles.scss"
-        ],
+        "styles": ["libs/shared/ui-tokens/src/tokens.scss", "apps/remote-tasks/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
         "production": {
-          "optimization": true,
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": false
+            },
+            "fonts": false
+          },
           "outputHashing": "all",
           "sourceMap": false,
           "namedChunks": false,
@@ -81,10 +85,10 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/apps/remote-tasks"],
       "options": {
-        "config": "apps/remote-tasks/vite.config.ts"
+        "command": "vitest run --config apps/remote-tasks/vite.config.ts"
       }
     },
     "lint": {

@@ -7,7 +7,11 @@ export default withNativeFederation({
       singleton: true,
       strictVersion: true,
       requiredVersion: 'auto',
+      includeSecondaries: true,
     }),
+  },
+  features: {
+    denseExternals: true,
   },
   skip: [
     'rxjs/ajax',

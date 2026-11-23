@@ -6,7 +6,8 @@ const INITIAL_TASKS: TaskItem[] = [
   {
     id: 'TSK-101',
     title: 'Architect Native Federation runtime manifest',
-    description: 'Configure dynamic manifest loader and esbuild module resolution across micro-apps.',
+    description:
+      'Configure dynamic manifest loader and esbuild module resolution across micro-apps.',
     status: 'done',
     priority: 'critical',
     assignee: {
@@ -34,7 +35,8 @@ const INITIAL_TASKS: TaskItem[] = [
   {
     id: 'TSK-103',
     title: 'Implement Shell graceful fallback and retry UI',
-    description: 'Ensure host handles offline remotes with diagnostic cards and non-blocking retry loops.',
+    description:
+      'Ensure host handles offline remotes with diagnostic cards and non-blocking retry loops.',
     status: 'done',
     priority: 'high',
     assignee: {
@@ -48,7 +50,8 @@ const INITIAL_TASKS: TaskItem[] = [
   {
     id: 'TSK-104',
     title: 'Setup GitHub Actions CI with Nx affected',
-    description: 'Establish automated matrix running lint, vitest, and build only on touched apps/libs.',
+    description:
+      'Establish automated matrix running lint, vitest, and build only on touched apps/libs.',
     status: 'todo',
     priority: 'medium',
     assignee: {

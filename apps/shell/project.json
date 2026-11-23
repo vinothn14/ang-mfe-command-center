@@ -39,15 +39,19 @@
             "output": "."
           }
         ],
-        "styles": [
-          "libs/shared/ui-tokens/src/tokens.scss",
-          "apps/shell/src/styles.scss"
-        ],
+        "styles": ["libs/shared/ui-tokens/src/tokens.scss", "apps/shell/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
         "production": {
-          "optimization": true,
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": false
+            },
+            "fonts": false
+          },
           "outputHashing": "all",
           "sourceMap": false,
           "namedChunks": false,
@@ -87,10 +91,10 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/apps/shell"],
       "options": {
-        "config": "apps/shell/vite.config.ts"
+        "command": "vitest run --config apps/shell/vite.config.ts"
       }
     },
     "lint": {

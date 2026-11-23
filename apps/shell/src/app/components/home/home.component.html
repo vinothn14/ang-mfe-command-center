@@ -4,8 +4,8 @@
     <div class="hero-badge">Angular 22 Enterprise Architecture</div>
     <h1 class="hero-title">Micro-Frontend Command Center</h1>
     <p class="hero-subtitle">
-      Demonstrating Native Federation with Angular's esbuild Application Builder, fine-grained Signals
-      state management, decoupled cross-remote event bus, and runtime manifest loading.
+      Demonstrating Native Federation with Angular's esbuild Application Builder, fine-grained
+      Signals state management, decoupled cross-remote event bus, and runtime manifest loading.
     </p>
 
     <div class="hero-actions">
@@ -17,7 +17,11 @@
       </a>
       <a routerLink="/missing-remote" class="btn btn-outline">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
         </svg>
         <span>Test Graceful Fallback UI</span>
       </a>
@@ -61,7 +65,8 @@
         <div class="card-status status-pending">PHASE 2</div>
         <h4>remote-analytics</h4>
         <p class="card-desc">
-          High-performance analytics widgets and throughput metrics driven by simulated backend APIs.
+          High-performance analytics widgets and throughput metrics driven by simulated backend
+          APIs.
         </p>
         <div class="meta-row">
           <span>Port: <code>4202</code></span>
@@ -94,12 +99,15 @@
       </div>
       <p class="telemetry-desc">
         Remotes communicate exclusively through typed contracts without direct dependencies.
-        Interact with the header theme toggle, auth button, or tasks board to watch events stream here.
+        Interact with the header theme toggle, auth button, or tasks board to watch events stream
+        here.
       </p>
 
       <div class="log-terminal">
         @if (recentEvents().length === 0) {
-          <div class="empty-log">Listening for cross-remote events... (toggle theme or cycle roles above)</div>
+          <div class="empty-log">
+            Listening for cross-remote events... (toggle theme or cycle roles above)
+          </div>
         } @else {
           @for (item of recentEvents(); track item.time + item.event) {
             <div class="log-line">
