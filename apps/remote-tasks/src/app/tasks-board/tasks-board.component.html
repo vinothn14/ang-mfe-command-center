@@ -1,0 +1,278 @@
+<div class="kanban-wrapper">
+  <!-- MFE Context Header -->
+  <div class="mfe-banner">
+    <div class="mfe-banner-left">
+      <span class="mfe-pill">Remote Micro-Frontend</span>
+      <span class="mfe-id">apps/remote-tasks (Port 4201)</span>
+    </div>
+    <div class="mfe-banner-right">
+      <span>Signals State Machine</span>
+      <span class="dot"></span>
+      <span>Event-Bus Synced</span>
+    </div>
+  </div>
+
+  <!-- Board Metrics Toolbar -->
+  <div class="board-header">
+    <div class="header-intro">
+      <h2>Engineering Tasks Board</h2>
+      <p>Multi-stage sprint execution driven purely by Angular Signals reactivity.</p>
+    </div>
+
+    <!-- Quick Metrics Strip -->
+    <div class="metrics-strip">
+      <div class="metric-card">
+        <span class="metric-label">Total Tasks</span>
+        <span class="metric-value">{{ store.metrics().total }}</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Active Work</span>
+        <span class="metric-value active">{{ store.metrics().active }}</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Completed</span>
+        <span class="metric-value done">{{ store.metrics().completed }}</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Progress</span>
+        <span class="metric-value rate">{{ store.metrics().rate }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters & Actions Toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search tasks, descriptions, tags..."
+        [value]="store.searchQuery()"
+        (input)="onSearch($any($event.target).value)"
+      />
+    </div>
+
+    <div class="priority-filters">
+      <span class="filter-label">Priority:</span>
+      @for (p of ['all', 'critical', 'high', 'medium', 'low']; track p) {
+        <button
+          class="filter-pill"
+          [class.active]="store.selectedPriority() === p"
+          (click)="onFilterChange($any(p))"
+        >
+          {{ p }}
+        </button>
+      }
+    </div>
+
+    <button class="btn btn-add" (click)="openModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+      <span>New Task</span>
+    </button>
+  </div>
+
+  <!-- Kanban Columns Grid -->
+  <div class="columns-grid">
+    <!-- Column 1: To Do -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <div class="col-title">
+          <span class="col-dot todo"></span>
+          <h3>To Do</h3>
+        </div>
+        <span class="col-count">{{ store.todo().length }}</span>
+      </div>
+      <div class="col-content">
+        @if (store.todo().length === 0) {
+          <div class="empty-col">No tasks in To Do</div>
+        } @else {
+          @for (task of store.todo(); track task.id) {
+            <ng-container
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: false, canForward: true }"
+            ></ng-container>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Column 2: In Progress -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <div class="col-title">
+          <span class="col-dot in-progress"></span>
+          <h3>In Progress</h3>
+        </div>
+        <span class="col-count">{{ store.inProgress().length }}</span>
+      </div>
+      <div class="col-content">
+        @if (store.inProgress().length === 0) {
+          <div class="empty-col">No active work items</div>
+        } @else {
+          @for (task of store.inProgress(); track task.id) {
+            <ng-container
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: true, canForward: true }"
+            ></ng-container>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Column 3: Code Review -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <div class="col-title">
+          <span class="col-dot review"></span>
+          <h3>Review</h3>
+        </div>
+        <span class="col-count">{{ store.review().length }}</span>
+      </div>
+      <div class="col-content">
+        @if (store.review().length === 0) {
+          <div class="empty-col">No items pending review</div>
+        } @else {
+          @for (task of store.review(); track task.id) {
+            <ng-container
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: true, canForward: true }"
+            ></ng-container>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Column 4: Done -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <div class="col-title">
+          <span class="col-dot done"></span>
+          <h3>Completed</h3>
+        </div>
+        <span class="col-count">{{ store.done().length }}</span>
+      </div>
+      <div class="col-content">
+        @if (store.done().length === 0) {
+          <div class="empty-col">No completed tasks</div>
+        } @else {
+          @for (task of store.done(); track task.id) {
+            <ng-container
+              *ngTemplateOutlet="taskCard; context: { $implicit: task, canBack: true, canForward: false }"
+            ></ng-container>
+          }
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Reusable Task Card Template -->
+  <ng-template #taskCard let-task let-canBack="canBack" let-canForward="canForward">
+    <div class="task-card" [attr.data-priority]="task.priority">
+      <div class="card-top">
+        <span class="task-id">{{ task.id }}</span>
+        <span class="priority-tag" [class]="task.priority">{{ task.priority }}</span>
+      </div>
+
+      <h4 class="task-title">{{ task.title }}</h4>
+      <p class="task-desc">{{ task.description }}</p>
+
+      <div class="tags-row">
+        @for (tag of task.tags; track tag) {
+          <span class="tag-pill">{{ tag }}</span>
+        }
+      </div>
+
+      <div class="card-footer">
+        <div class="assignee-box">
+          <img [src]="task.assignee.avatarUrl" [alt]="task.assignee.name" class="assignee-img" />
+          <span class="assignee-name">{{ task.assignee.name }}</span>
+        </div>
+
+        <div class="card-actions">
+          @if (canBack) {
+            <button class="nav-btn" (click)="moveTask(task.id, 'backward')" title="Move to previous column">
+              ◀
+            </button>
+          }
+
+          <button class="delete-btn" (click)="deleteTask(task.id)" title="Delete task">
+            🗑
+          </button>
+
+          @if (canForward) {
+            <button class="nav-btn" (click)="moveTask(task.id, 'forward')" title="Advance to next column">
+              ▶
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Add Task Modal -->
+  @if (showAddModal()) {
+    <div class="modal-backdrop" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Create New Task</h3>
+          <button class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+
+        <form (submit)="submitNewTask(); $event.preventDefault()">
+          <div class="form-group">
+            <label>Task Title *</label>
+            <input
+              type="text"
+              name="title"
+              [(ngModel)]="newTitle"
+              placeholder="e.g. Implement Web Worker telemetry"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              [(ngModel)]="newDescription"
+              rows="3"
+              placeholder="Detailed architecture acceptance criteria..."
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Priority</label>
+              <select name="priority" [(ngModel)]="newPriority">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Tags (comma-separated)</label>
+              <input
+                type="text"
+                name="tags"
+                [(ngModel)]="newTagsString"
+                placeholder="Architecture, Core, MFE"
+              />
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!newTitle.trim()">
+              Create Task
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

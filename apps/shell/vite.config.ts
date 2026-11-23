@@ -1,9 +1,13 @@
 import { defineConfig } from 'vite';
+import angular from '@analogjs/vite-plugin-angular';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   root: __dirname,
-  plugins: [tsconfigPaths({ root: '../../' })],
+  plugins: [
+    angular(),
+    tsconfigPaths({ root: '../../' }),
+  ],
   test: {
     globals: true,
     environment: 'jsdom',

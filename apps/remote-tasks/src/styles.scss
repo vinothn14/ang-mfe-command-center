@@ -1,0 +1,17 @@
+@import '../../libs/shared/ui-tokens/src/tokens.scss';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-family-sans);
+  background-color: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+}
