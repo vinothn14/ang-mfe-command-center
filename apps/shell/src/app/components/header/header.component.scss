@@ -1,0 +1,242 @@
+.shell-header {
+  height: var(--header-height);
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    box-shadow: 0 4px 10px var(--color-brand-glow);
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .version-tag {
+      font-size: 0.7rem;
+      font-family: var(--font-family-mono);
+      color: var(--color-brand-primary);
+      font-weight: 600;
+    }
+  }
+}
+
+.shell-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    &:hover:not(.disabled) {
+      color: var(--color-text-primary);
+      background: var(--color-bg-surface-hover);
+    }
+
+    &.active {
+      color: var(--color-brand-primary);
+      background: var(--color-brand-glow);
+      font-weight: 600;
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.test-fallback {
+      color: var(--color-warning);
+
+      &.active {
+        background: var(--color-warning-bg);
+      }
+    }
+
+    .mfe-badge {
+      font-size: 0.65rem;
+      font-family: var(--font-family-mono);
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.1rem 0.4rem;
+      border-radius: var(--radius-full);
+      background: var(--color-brand-glow);
+      color: var(--color-brand-primary);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .phase-badge {
+      font-size: 0.65rem;
+      font-family: var(--font-family-mono);
+      padding: 0.1rem 0.4rem;
+      border-radius: var(--radius-full);
+      background: var(--color-bg-muted);
+      color: var(--color-text-muted);
+    }
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: var(--color-bg-surface-hover);
+    border-color: var(--color-brand-primary);
+  }
+}
+
+.user-profile {
+  .user-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.3rem 0.6rem 0.3rem 0.4rem;
+    background: var(--color-bg-canvas);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--color-bg-muted);
+    }
+
+    .user-details {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .user-name {
+        font-size: 0.825rem;
+        font-weight: 600;
+        color: var(--color-text-primary);
+      }
+
+      .role-pill {
+        font-size: 0.65rem;
+        font-family: var(--font-family-mono);
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 0.1rem 0.4rem;
+        border-radius: var(--radius-full);
+        background: var(--color-brand-glow);
+        color: var(--color-brand-primary);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        cursor: pointer;
+        transition: transform 0.1s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    .logout-btn {
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      padding: 0.2rem;
+      border-radius: var(--radius-sm);
+      transition: color 0.2s ease;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      &:hover {
+        color: var(--color-danger);
+      }
+    }
+  }
+
+  .login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.825rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    background: var(--color-brand-primary);
+    color: var(--color-text-inverse);
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

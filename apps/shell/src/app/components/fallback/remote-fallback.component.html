@@ -1,0 +1,70 @@
+<div class="fallback-container">
+  <div class="fallback-card">
+    <div class="fallback-header">
+      <div class="alert-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+        </svg>
+      </div>
+      <div class="header-content">
+        <div class="status-pill">Fault-Tolerant Degraded Mode</div>
+        <h2>Micro-Frontend Unavailable</h2>
+        <p class="subtitle">The remote failed to load at runtime from the federation manifest.</p>
+      </div>
+    </div>
+
+    <div class="diagnostic-box">
+      <div class="info-row">
+        <span class="label">Remote Identifier:</span>
+        <code class="val highlight">{{ remoteName }}</code>
+      </div>
+      <div class="info-row">
+        <span class="label">Manifest Endpoint:</span>
+        <code class="val">{{ remoteUrl }}</code>
+      </div>
+      <div class="info-row">
+        <span class="label">Diagnostic Cause:</span>
+        <span class="val error-text">{{ errorMessage }}</span>
+      </div>
+    </div>
+
+    <div class="architectural-callout">
+      <h4>🛡️ Architecture Guardrail</h4>
+      <p>
+        In an enterprise micro-frontend architecture, individual remote outages must never crash the
+        host application. The shell isolated this failure using runtime boundary handling and
+        maintains full responsiveness across all other modules.
+      </p>
+    </div>
+
+    <div class="dev-hint">
+      <span class="hint-title">Local Development Fix:</span>
+      <code>nx serve {{ remoteName }} --port 4201</code>
+    </div>
+
+    <div class="action-bar">
+      <button class="btn btn-primary" (click)="retry()" [disabled]="isRetrying()">
+        @if (isRetrying()) {
+          <span class="spinner"></span>
+          <span>Retrying Connection...</span>
+        } @else {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span>Retry Connection (Attempt #{{ retryCount() + 1 }})</span>
+        }
+      </button>
+
+      <a routerLink="/" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span>Return to Shell Home</span>
+      </a>
+    </div>
+  </div>
+</div>

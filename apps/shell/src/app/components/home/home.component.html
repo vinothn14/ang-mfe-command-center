@@ -1,0 +1,115 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-badge">Angular 22 Enterprise Architecture</div>
+    <h1 class="hero-title">Micro-Frontend Command Center</h1>
+    <p class="hero-subtitle">
+      Demonstrating Native Federation with Angular's esbuild Application Builder, fine-grained Signals
+      state management, decoupled cross-remote event bus, and runtime manifest loading.
+    </p>
+
+    <div class="hero-actions">
+      <a routerLink="/tasks" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        <span>Launch Tasks Board MFE</span>
+      </a>
+      <a routerLink="/missing-remote" class="btn btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>Test Graceful Fallback UI</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- MFE Cluster Grid -->
+  <section class="section-cluster">
+    <h3 class="section-title">Federated Application Cluster</h3>
+    <div class="cluster-grid">
+      <!-- Shell Card -->
+      <div class="cluster-card active">
+        <div class="card-status status-online">HOST / SHELL</div>
+        <h4>Shell (Host)</h4>
+        <p class="card-desc">
+          Root application orchestrator. Houses global header, theme engine, mock authentication,
+          and runtime manifest dynamic remote resolver.
+        </p>
+        <div class="meta-row">
+          <span>Port: <code>4200</code></span>
+          <span>Status: <strong>Running</strong></span>
+        </div>
+      </div>
+
+      <!-- Remote Tasks Card -->
+      <div class="cluster-card active">
+        <div class="card-status status-online">REMOTE MFE</div>
+        <h4>remote-tasks</h4>
+        <p class="card-desc">
+          Independent kanban board micro-frontend. Pure Signals reactive state, multi-column task
+          lifecycle, and event bus integration.
+        </p>
+        <div class="meta-row">
+          <span>Port: <code>4201</code></span>
+          <span>Phase 1: <strong>Live</strong></span>
+        </div>
+      </div>
+
+      <!-- Remote Analytics Card -->
+      <div class="cluster-card phase-two">
+        <div class="card-status status-pending">PHASE 2</div>
+        <h4>remote-analytics</h4>
+        <p class="card-desc">
+          High-performance analytics widgets and throughput metrics driven by simulated backend APIs.
+        </p>
+        <div class="meta-row">
+          <span>Port: <code>4202</code></span>
+          <span>Status: <strong>Planned</strong></span>
+        </div>
+      </div>
+
+      <!-- Remote Settings Card -->
+      <div class="cluster-card phase-two">
+        <div class="card-status status-pending">PHASE 2</div>
+        <h4>remote-settings</h4>
+        <p class="card-desc">
+          Account profiles, notification preferences, and team permissions with reactive forms.
+        </p>
+        <div class="meta-row">
+          <span>Port: <code>4203</code></span>
+          <span>Status: <strong>Planned</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Telemetry & Event Bus Feed -->
+  <section class="section-telemetry">
+    <div class="telemetry-card">
+      <div class="telemetry-header">
+        <div class="pulse-indicator"></div>
+        <h3>Cross-Remote Event Bus Telemetry</h3>
+        <span class="badge-tech">libs/shared/event-bus</span>
+      </div>
+      <p class="telemetry-desc">
+        Remotes communicate exclusively through typed contracts without direct dependencies.
+        Interact with the header theme toggle, auth button, or tasks board to watch events stream here.
+      </p>
+
+      <div class="log-terminal">
+        @if (recentEvents().length === 0) {
+          <div class="empty-log">Listening for cross-remote events... (toggle theme or cycle roles above)</div>
+        } @else {
+          @for (item of recentEvents(); track item.time + item.event) {
+            <div class="log-line">
+              <span class="log-time">[{{ item.time }}]</span>
+              <span class="log-event">{{ item.event }}</span>
+              <span class="log-payload">{{ item.payload }}</span>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </section>
+</div>
