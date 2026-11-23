@@ -17,17 +17,17 @@ export default withNativeFederation({
       '@mfe/shared/event-bus': {
         singleton: true,
         strictVersion: false,
-        requiredVersion: 'auto',
+        requiredVersion: false,
       },
       '@mfe/shared/contracts': {
         singleton: true,
         strictVersion: false,
-        requiredVersion: 'auto',
+        requiredVersion: false,
       },
       '@mfe/shared/ui-tokens': {
         singleton: true,
         strictVersion: false,
-        requiredVersion: 'auto',
+        requiredVersion: false,
       },
     }),
   },

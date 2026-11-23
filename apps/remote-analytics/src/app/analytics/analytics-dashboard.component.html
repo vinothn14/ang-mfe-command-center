@@ -1,0 +1,189 @@
+<div class="analytics-wrapper">
+  <!-- MFE Context Header -->
+  <div class="mfe-banner">
+    <div class="mfe-banner-left">
+      <span class="mfe-pill">Remote Micro-Frontend</span>
+      <span class="mfe-id">apps/remote-analytics (Port 4202)</span>
+    </div>
+    <div class="mfe-banner-right">
+      <span class="svg-badge">Inline SVG Charts (Zero Heavy Dep)</span>
+      <span class="dot"></span>
+      <span>Event-Bus Synced</span>
+    </div>
+  </div>
+
+  <!-- Header & KPI Highlights -->
+  <div class="dashboard-header">
+    <div class="header-intro">
+      <h2>Engineering Throughput & Analytics</h2>
+      <p>Real-time telemetry and throughput charts reacting directly to cross-remote task events.</p>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">Total Work Items</span>
+        <span class="kpi-value">{{ store.totalTasks() }}</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Completion Ratio</span>
+        <span class="kpi-value highlight">{{ store.completionRate() }}%</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Current Sprint</span>
+        <span class="kpi-value success">{{ store.statusCounts().done }} Done</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Active Work</span>
+        <span class="kpi-value warning">{{ store.statusCounts().in_progress + store.statusCounts().review }} WIP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Layout -->
+  <div class="charts-layout">
+    <!-- Chart 1: Sprint Throughput Bar Chart (Inline SVG) -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Sprint Throughput Trend</h3>
+          <p class="chart-sub">Tasks completed per sprint cycle (reactive to event bus)</p>
+        </div>
+        <span class="chart-tag">Velocity</span>
+      </div>
+
+      <div class="svg-chart-container">
+        <svg class="bar-chart" viewBox="0 0 460 200" preserveAspectRatio="none">
+          <!-- Background Grid Lines -->
+          <line x1="40" y1="30" x2="440" y2="30" class="grid-line" />
+          <line x1="40" y1="80" x2="440" y2="80" class="grid-line" />
+          <line x1="40" y1="130" x2="440" y2="130" class="grid-line" />
+          <line x1="40" y1="170" x2="440" y2="170" class="axis-line" />
+
+          <!-- Bars -->
+          @for (item of store.throughput(); track item.week; let idx = $index) {
+            <!-- Bar calculation: x offset = 60 + idx * 95 -->
+            <g class="bar-group">
+              <rect
+                [attr.x]="70 + idx * 95"
+                [attr.y]="170 - calculateBarHeight(item.completed, store.maxThroughput())"
+                width="48"
+                [attr.height]="calculateBarHeight(item.completed, store.maxThroughput())"
+                rx="6"
+                class="bar-rect"
+              />
+              <!-- Data Label on Top -->
+              <text
+                [attr.x]="94 + idx * 95"
+                [attr.y]="160 - calculateBarHeight(item.completed, store.maxThroughput())"
+                text-anchor="middle"
+                class="bar-val-text"
+              >
+                {{ item.completed }}
+              </text>
+              <!-- X-Axis Label -->
+              <text
+                [attr.x]="94 + idx * 95"
+                y="190"
+                text-anchor="middle"
+                class="axis-text"
+              >
+                {{ item.week }}
+              </text>
+            </g>
+          }
+        </svg>
+      </div>
+
+      <div class="chart-footer">
+        <span class="hint">💡 Moving tasks to Completed in <strong>remote-tasks</strong> increments this sprint velocity in real time.</span>
+      </div>
+    </div>
+
+    <!-- Chart 2: Status Distribution (Segmented Progress + Breakdown) -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Work Distribution</h3>
+          <p class="chart-sub">Status allocation across active backlog</p>
+        </div>
+        <span class="chart-tag">Status</span>
+      </div>
+
+      <!-- Segmented Bar Visualization -->
+      <div class="segmented-bar-wrapper">
+        <div class="segmented-bar">
+          @if (store.totalTasks() > 0) {
+            <div
+              class="segment todo"
+              [style.width.%]="(store.statusCounts().todo / store.totalTasks()) * 100"
+              [title]="'To Do: ' + store.statusCounts().todo"
+            ></div>
+            <div
+              class="segment in-progress"
+              [style.width.%]="(store.statusCounts().in_progress / store.totalTasks()) * 100"
+              [title]="'In Progress: ' + store.statusCounts().in_progress"
+            ></div>
+            <div
+              class="segment review"
+              [style.width.%]="(store.statusCounts().review / store.totalTasks()) * 100"
+              [title]="'Review: ' + store.statusCounts().review"
+            ></div>
+            <div
+              class="segment done"
+              [style.width.%]="(store.statusCounts().done / store.totalTasks()) * 100"
+              [title]="'Done: ' + store.statusCounts().done"
+            ></div>
+          }
+        </div>
+      </div>
+
+      <!-- Breakdown Grid -->
+      <div class="distribution-grid">
+        <div class="dist-item todo">
+          <div class="dot"></div>
+          <div class="dist-info">
+            <span class="dist-name">To Do</span>
+            <span class="dist-count">{{ store.statusCounts().todo }} tasks</span>
+          </div>
+        </div>
+
+        <div class="dist-item in-progress">
+          <div class="dot"></div>
+          <div class="dist-info">
+            <span class="dist-name">In Progress</span>
+            <span class="dist-count">{{ store.statusCounts().in_progress }} tasks</span>
+          </div>
+        </div>
+
+        <div class="dist-item review">
+          <div class="dot"></div>
+          <div class="dist-info">
+            <span class="dist-name">Review</span>
+            <span class="dist-count">{{ store.statusCounts().review }} tasks</span>
+          </div>
+        </div>
+
+        <div class="dist-item done">
+          <div class="dot"></div>
+          <div class="dist-info">
+            <span class="dist-name">Completed</span>
+            <span class="dist-count">{{ store.statusCounts().done }} tasks</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-time Activity Feed -->
+      <div class="activity-feed">
+        <h4>Live Inter-MFE Activity Stream</h4>
+        <div class="activity-list">
+          @for (act of store.activities(); track act.id) {
+            <div class="activity-item">
+              <span class="act-time">{{ act.timestamp }}</span>
+              <span class="act-desc">{{ act.description }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

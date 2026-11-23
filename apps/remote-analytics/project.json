@@ -1,0 +1,104 @@
+{
+  "name": "remote-analytics",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "mfe",
+  "sourceRoot": "apps/remote-analytics/src",
+  "tags": ["scope:remote-analytics", "type:remote"],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "remote-analytics:esbuild:production",
+        "rebuildDelay": 0
+      },
+      "configurations": {
+        "production": {
+          "target": "remote-analytics:esbuild:production"
+        },
+        "development": {
+          "target": "remote-analytics:esbuild:development",
+          "dev": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "options": {
+        "outputPath": "dist/apps/remote-analytics",
+        "index": "apps/remote-analytics/src/index.html",
+        "browser": "apps/remote-analytics/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/remote-analytics/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [],
+        "styles": [
+          "libs/shared/ui-tokens/src/tokens.scss",
+          "apps/remote-analytics/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": false
+            },
+            "fonts": false
+          },
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "aot": true,
+          "extractLicenses": true
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "remote-analytics:serve-original:development",
+        "rebuildDelay": 0,
+        "dev": true,
+        "port": 4202
+      }
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "remote-analytics:esbuild:development",
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "remote-analytics:esbuild:development"
+        },
+        "production": {
+          "buildTarget": "remote-analytics:esbuild:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/apps/remote-analytics"],
+      "options": {
+        "command": "vitest run --config apps/remote-analytics/vite.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint apps/remote-analytics"
+      }
+    }
+  }
+}
