@@ -10,5 +10,5 @@ export const settingsRoleGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.parseUrl('/access-denied');
+  return router.createUrlTree(['/access-denied']);
 };

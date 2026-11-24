@@ -18,7 +18,19 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
     },
   ],
+  webServer: {
+    command: 'npm run start:all',
+    url: 'http://localhost:4200',
+    reuseExistingServer: true,
+    timeout: 120000,
+    env: {
+      NX_DAEMON: 'false',
+    },
+  },
 });

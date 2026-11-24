@@ -3,6 +3,8 @@ import { provideZoneChangeDetection } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { EVENT_BUS, EventBusService } from '@mfe/shared/event-bus';
 
+import { renderBootstrapError } from './main';
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -11,4 +13,4 @@ bootstrapApplication(AppComponent, {
       useExisting: EventBusService,
     },
   ],
-}).catch(err => console.error('[Remote-Analytics] Standalone bootstrap error:', err));
+}).catch(err => renderBootstrapError('Remote-Analytics', err));

@@ -17,6 +17,7 @@ describe('settingsRoleGuard', () => {
         {
           provide: Router,
           useValue: {
+            createUrlTree: (commands: string[]) => commands.join('/'),
             parseUrl: (url: string) => url,
             navigate: () => Promise.resolve(true),
           },
