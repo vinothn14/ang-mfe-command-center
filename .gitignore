@@ -40,3 +40,5 @@ lerna-debug.log*
 .coverage/
 coverage/
 .vite/
+test-results/
+playwright-report/

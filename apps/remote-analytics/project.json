@@ -29,10 +29,16 @@
         "outputPath": "dist/apps/remote-analytics",
         "index": "apps/remote-analytics/src/index.html",
         "browser": "apps/remote-analytics/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": ["zone.js", "es-module-shims"],
         "tsConfig": "apps/remote-analytics/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/remote-analytics/public",
+            "output": "."
+          }
+        ],
         "styles": [
           "libs/shared/ui-tokens/src/tokens.scss",
           "apps/remote-analytics/src/styles.scss"

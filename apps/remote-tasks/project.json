@@ -29,10 +29,16 @@
         "outputPath": "dist/apps/remote-tasks",
         "index": "apps/remote-tasks/src/index.html",
         "browser": "apps/remote-tasks/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": ["zone.js", "es-module-shims"],
         "tsConfig": "apps/remote-tasks/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/remote-tasks/public",
+            "output": "."
+          }
+        ],
         "styles": ["libs/shared/ui-tokens/src/tokens.scss", "apps/remote-tasks/src/styles.scss"],
         "scripts": []
       },
