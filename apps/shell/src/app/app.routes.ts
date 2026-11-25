@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { RemoteLoaderComponent } from './components/remote-loader/remote-loader.component';
+import { WidgetHostComponent } from './components/widget-host/widget-host.component';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { settingsRoleGuard } from './guards/role.guard';
 
@@ -37,6 +38,10 @@ export const routes: Routes = [
       exposedModule: './Component',
       remoteUrl: 'http://localhost:4203/remoteEntry.json',
     },
+  },
+  {
+    path: 'widget',
+    component: WidgetHostComponent,
   },
   {
     path: 'access-denied',

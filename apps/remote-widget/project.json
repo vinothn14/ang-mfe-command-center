@@ -1,0 +1,35 @@
+{
+  "name": "remote-widget",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/remote-widget/src",
+  "tags": ["scope:remote-widget", "type:remote"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/remote-widget/browser"],
+      "options": {
+        "command": "vite build --config apps/remote-widget/vite.config.ts"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vite --config apps/remote-widget/vite.config.ts --port 4204"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/apps/remote-widget"],
+      "options": {
+        "command": "vitest run --config apps/remote-widget/vite.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint apps/remote-widget"
+      }
+    }
+  }
+}

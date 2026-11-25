@@ -36,7 +36,7 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     // Verify brand title and navigation links
     await expect(page.locator('.brand .title')).toContainText('Command Center');
     const navItems = page.locator('.nav-item');
-    await expect(navItems).toHaveCount(5);
+    await expect(navItems).toHaveCount(6);
 
     // Check cluster overview cards for all 4 applications
     await expect(page.locator('.cluster-grid .cluster-card')).toHaveCount(4);
@@ -114,7 +114,20 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     expect(pageErrors).toEqual([]);
   });
 
-  test('standalone remotes render non-empty app-root with zero console errors', async ({ page }) => {
+  test('navigates to and renders Remote Widget Web Component MFE with zero console errors', async ({ page }) => {
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
+    await page.goto('/widget');
+    await assertAppRootNonEmpty(page);
+
+    const widget = page.locator('mfe-pulse-widget');
+    await expect(widget).toBeVisible({ timeout: 15000 });
+    await expect(widget).toContainText('Cross-Framework Pulse Widget');
+
+    expect(consoleErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
+  });
+
+  test('standalone remotes render non-empty root with zero console errors', async ({ page }) => {
     const remoteUrls = [
       'http://localhost:4201',
       'http://localhost:4202',
@@ -128,6 +141,12 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
       expect(consoleErrors, `Console errors on ${url}`).toEqual([]);
       expect(pageErrors, `Page errors on ${url}`).toEqual([]);
     }
+
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
+    await page.goto('http://localhost:4204');
+    await expect(page.locator('mfe-pulse-widget')).toBeVisible();
+    expect(consoleErrors, 'Console errors on http://localhost:4204').toEqual([]);
+    expect(pageErrors, 'Page errors on http://localhost:4204').toEqual([]);
   });
 
   test('displays graceful fallback UI when navigating to unavailable remote', async ({ page }) => {

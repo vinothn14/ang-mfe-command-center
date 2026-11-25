@@ -52,6 +52,15 @@ export default defineConfig({
       },
     },
     {
+      command: 'npx nx serve remote-widget --port 4204',
+      url: 'http://localhost:4204/widget-entry.js',
+      reuseExistingServer: true,
+      timeout: 120000,
+      env: {
+        NX_DAEMON: 'false',
+      },
+    },
+    {
       command: 'npx nx serve shell --port 4200',
       url: 'http://localhost:4200',
       reuseExistingServer: true,

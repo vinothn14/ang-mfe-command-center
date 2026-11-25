@@ -28,3 +28,15 @@ export interface EventMap {
 }
 
 export type EventKey = keyof EventMap;
+
+/**
+ * Framework-agnostic EventBus adapter for non-Angular Web Component remotes.
+ */
+export interface EventBusAdapter {
+  subscribe<K extends EventKey>(event: K, handler: (payload: EventMap[K]) => void): () => void;
+  subscribeWithReplay<K extends EventKey>(
+    event: K,
+    handler: (payload: EventMap[K]) => void,
+  ): () => void;
+  dispatch<K extends EventKey>(event: K, payload: EventMap[K]): void;
+}
