@@ -7,7 +7,6 @@
   "targets": {
     "test": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/coverage/libs/shared/event-bus"],
       "options": {
         "command": "vitest run --config libs/shared/event-bus/vite.config.ts"
       }

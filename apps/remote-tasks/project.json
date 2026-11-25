@@ -92,7 +92,6 @@
     },
     "test": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/coverage/apps/remote-tasks"],
       "options": {
         "command": "vitest run --config apps/remote-tasks/vite.config.ts"
       }

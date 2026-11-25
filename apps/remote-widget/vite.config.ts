@@ -42,9 +42,5 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts}'],
     reporters: ['default'],
-    coverage: {
-      reportsDirectory: '../../coverage/apps/remote-widget',
-      provider: 'v8',
-    },
   },
 });

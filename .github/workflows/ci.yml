@@ -39,7 +39,7 @@ jobs:
         run: npx nx affected -t lint
 
       - name: Run Vitest Unit Tests on affected projects
-        run: npx nx affected -t test --coverage
+        run: npx nx affected -t test
 
       - name: Build affected micro-frontends and libraries
         run: npx nx affected -t build

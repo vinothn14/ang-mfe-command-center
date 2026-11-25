@@ -95,7 +95,6 @@
     },
     "test": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/coverage/apps/remote-analytics"],
       "options": {
         "command": "vitest run --config apps/remote-analytics/vite.config.ts"
       }

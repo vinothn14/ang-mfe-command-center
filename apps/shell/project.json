@@ -92,7 +92,6 @@
     },
     "test": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/coverage/apps/shell"],
       "options": {
         "command": "vitest run --config apps/shell/vite.config.ts"
       }

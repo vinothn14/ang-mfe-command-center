@@ -20,7 +20,6 @@
     },
     "test": {
       "executor": "nx:run-commands",
-      "outputs": ["{workspaceRoot}/coverage/apps/remote-widget"],
       "options": {
         "command": "vitest run --config apps/remote-widget/vite.config.ts"
       }
