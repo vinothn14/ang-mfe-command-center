@@ -2,14 +2,20 @@ import { initFederation } from '@angular-architects/native-federation';
 
 // Environment-aware manifest resolution:
 // Resolves local development manifest on localhost / 127.0.0.1,
-// or production manifest when deployed (Netlify, CDN, or staging).
+// or production manifest when deployed (Vercel production or preview).
 const isLocalhost =
   typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1' ||
     window.location.hostname.endsWith('.local'));
 
-const manifestEndpoint = isLocalhost ? 'federation.manifest.json' : 'federation.manifest.prod.json';
+const customManifest =
+  typeof window !== 'undefined'
+    ? (window as unknown as { __MFE_MANIFEST_URL__?: string }).__MFE_MANIFEST_URL__
+    : undefined;
+
+const manifestEndpoint =
+  customManifest || (isLocalhost ? 'federation.manifest.json' : 'federation.manifest.prod.json');
 
 export function renderBootstrapError(context: string, err: unknown): void {
   console.error(`[${context}] Fatal bootstrap failure:`, err);
