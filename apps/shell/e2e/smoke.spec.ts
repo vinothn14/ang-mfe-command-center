@@ -1,16 +1,37 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+async function attachErrorCollectors(page: Page): Promise<{ consoleErrors: string[]; pageErrors: string[] }> {
+  const consoleErrors: string[] = [];
+  const pageErrors: string[] = [];
+
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      consoleErrors.push(msg.text());
+    }
+  });
+  page.on('pageerror', err => {
+    pageErrors.push(err.message);
+  });
+
+  return { consoleErrors, pageErrors };
+}
+
+async function assertAppRootNonEmpty(page: Page): Promise<void> {
+  const appRoot = page.locator('app-root');
+  await expect(appRoot).toBeVisible();
+  const childCount = await page.evaluate(
+    () => document.querySelector('app-root')?.childElementCount ?? 0,
+  );
+  expect(childCount).toBeGreaterThan(0);
+}
 
 test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
-  test('shell root loads successfully and renders children into app-root', async ({ page }) => {
+  test('shell root loads successfully and renders children into app-root with zero console errors', async ({ page }) => {
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/');
 
     // Assert app-root is non-empty (prevents silent blank page regressions)
-    const appRoot = page.locator('app-root');
-    await expect(appRoot).toBeVisible();
-    const childCount = await page.evaluate(
-      () => document.querySelector('app-root')?.childElementCount ?? 0,
-    );
-    expect(childCount).toBeGreaterThan(0);
+    await assertAppRootNonEmpty(page);
 
     // Verify brand title and navigation links
     await expect(page.locator('.brand .title')).toContainText('Command Center');
@@ -23,10 +44,15 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     await expect(page.locator('.cluster-grid')).toContainText('remote-tasks');
     await expect(page.locator('.cluster-grid')).toContainText('remote-analytics');
     await expect(page.locator('.cluster-grid')).toContainText('remote-settings');
+
+    expect(consoleErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
   });
 
   test('theme toggle switches shell and propagates data-theme attribute', async ({ page }) => {
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/');
+    await assertAppRootNonEmpty(page);
 
     const html = page.locator('html');
     const initialTheme = await html.getAttribute('data-theme');
@@ -37,25 +63,29 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
 
     const toggledTheme = await html.getAttribute('data-theme');
     expect(toggledTheme).not.toBe(initialTheme);
+
+    expect(consoleErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
   });
 
-  test('navigates to and renders Remote Tasks MFE', async ({ page }) => {
+  test('navigates to and renders Remote Tasks MFE with zero console errors', async ({ page }) => {
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/tasks');
-
-    const appRoot = page.locator('app-root');
-    await expect(appRoot).toBeVisible();
+    await assertAppRootNonEmpty(page);
 
     // Verify tasks board component renders inside the shell
     const board = page.locator('mfe-tasks-board');
     await expect(board).toBeVisible({ timeout: 15000 });
     await expect(page.locator('.board-header h2')).toContainText('Engineering Tasks Board');
+
+    expect(consoleErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
   });
 
-  test('navigates to and renders Remote Analytics MFE', async ({ page }) => {
+  test('navigates to and renders Remote Analytics MFE with zero console errors', async ({ page }) => {
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/analytics');
-
-    const appRoot = page.locator('app-root');
-    await expect(appRoot).toBeVisible();
+    await assertAppRootNonEmpty(page);
 
     // Verify analytics dashboard renders with inline SVG charts
     const dashboard = page.locator('mfe-analytics-dashboard');
@@ -63,13 +93,15 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     await expect(page.locator('.header-intro h2')).toContainText(
       'Engineering Throughput & Analytics',
     );
+
+    expect(consoleErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
   });
 
-  test('navigates to and renders Remote Settings MFE for authorized roles', async ({ page }) => {
+  test('navigates to and renders Remote Settings MFE for authorized roles with zero console errors', async ({ page }) => {
+    const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/settings');
-
-    const appRoot = page.locator('app-root');
-    await expect(appRoot).toBeVisible();
+    await assertAppRootNonEmpty(page);
 
     // Verify settings form component renders
     const settingsForm = page.locator('mfe-settings-form');
@@ -77,6 +109,25 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     await expect(page.locator('.settings-wrapper h2')).toContainText(
       'Environment & User Preferences',
     );
+
+    expect(consoleErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
+  });
+
+  test('standalone remotes render non-empty app-root with zero console errors', async ({ page }) => {
+    const remoteUrls = [
+      'http://localhost:4201',
+      'http://localhost:4202',
+      'http://localhost:4203',
+    ];
+
+    for (const url of remoteUrls) {
+      const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
+      await page.goto(url);
+      await assertAppRootNonEmpty(page);
+      expect(consoleErrors, `Console errors on ${url}`).toEqual([]);
+      expect(pageErrors, `Page errors on ${url}`).toEqual([]);
+    }
   });
 
   test('displays graceful fallback UI when navigating to unavailable remote', async ({ page }) => {

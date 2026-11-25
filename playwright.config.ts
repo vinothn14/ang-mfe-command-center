@@ -20,17 +20,45 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        channel: 'chrome',
       },
     },
   ],
-  webServer: {
-    command: 'npm run start:all',
-    url: 'http://localhost:4200',
-    reuseExistingServer: true,
-    timeout: 120000,
-    env: {
-      NX_DAEMON: 'false',
+  webServer: [
+    {
+      command: 'npx nx serve remote-tasks --port 4201',
+      url: 'http://localhost:4201/remoteEntry.json',
+      reuseExistingServer: true,
+      timeout: 120000,
+      env: {
+        NX_DAEMON: 'false',
+      },
     },
-  },
+    {
+      command: 'npx nx serve remote-analytics --port 4202',
+      url: 'http://localhost:4202/remoteEntry.json',
+      reuseExistingServer: true,
+      timeout: 120000,
+      env: {
+        NX_DAEMON: 'false',
+      },
+    },
+    {
+      command: 'npx nx serve remote-settings --port 4203',
+      url: 'http://localhost:4203/remoteEntry.json',
+      reuseExistingServer: true,
+      timeout: 120000,
+      env: {
+        NX_DAEMON: 'false',
+      },
+    },
+    {
+      command: 'npx nx serve shell --port 4200',
+      url: 'http://localhost:4200',
+      reuseExistingServer: true,
+      timeout: 120000,
+      env: {
+        NX_DAEMON: 'false',
+      },
+    },
+  ],
 });
