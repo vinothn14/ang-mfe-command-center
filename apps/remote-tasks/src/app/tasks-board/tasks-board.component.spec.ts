@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { TasksBoardComponent } from './tasks-board.component';
 import { TaskStoreService } from './task-store.service';
 import { EventBusService } from '@mfe/shared/event-bus';
-import { AUTH_READER_TOKEN, AuthReader, INITIAL_AUTH_STATE } from '@mfe/shared/contracts';
+import { AUTH_READER_TOKEN, AuthReader, AuthState, INITIAL_AUTH_STATE } from '@mfe/shared/contracts';
 
 describe('TasksBoardComponent', () => {
   let component: TasksBoardComponent;
@@ -33,18 +33,20 @@ describe('TasksBoardComponent', () => {
 
   it('should block create, delete, and status moves (arrow buttons) for viewer role', () => {
     const viewerAuthReader: AuthReader = {
-      authState: signal({
+      authState: signal<AuthState>({
         ...INITIAL_AUTH_STATE,
         user: {
           id: 'usr-viewer',
           name: 'Viewer User',
           email: 'viewer@enterprise-mfe.io',
           role: 'viewer',
+          avatarUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=Viewer',
         },
       }).asReadonly(),
-      currentRole: signal('viewer' as const).asReadonly(),
-      isViewer: () => true,
-      hasRole: role => role === 'viewer',
+      role: signal('viewer' as const).asReadonly(),
+      isViewer: signal(true).asReadonly(),
+      canModifyTasks: signal(false).asReadonly(),
+      canAccessSettings: signal(false).asReadonly(),
     };
 
     TestBed.resetTestingModule();
