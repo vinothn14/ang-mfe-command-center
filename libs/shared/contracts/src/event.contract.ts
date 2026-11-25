@@ -9,6 +9,7 @@ export interface RemoteLoadMetadata {
 
 export interface RemoteErrorMetadata {
   remoteName: string;
+  remoteVersion?: string;
   error: string;
   timestamp: number;
 }

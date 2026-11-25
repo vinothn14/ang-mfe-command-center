@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/native-federation';
 import { RemoteFallbackComponent } from '../fallback/remote-fallback.component';
 import { EventBusService } from '@mfe/shared/event-bus';
+import { ERROR_REPORTER_TOKEN } from '@mfe/shared/contracts';
 
 @Component({
   selector: 'app-remote-loader',
@@ -96,11 +97,13 @@ import { EventBusService } from '@mfe/shared/event-bus';
 export class RemoteLoaderComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly eventBus = inject(EventBusService);
+  private readonly errorReporter = inject(ERROR_REPORTER_TOKEN);
 
   @ViewChild('remoteContainer', { read: ViewContainerRef, static: false })
   private containerRef?: ViewContainerRef;
 
   @Input() remoteName = 'remote-tasks';
+  @Input() remoteVersion = '0.1.0';
   @Input() exposedModule = './Component';
   @Input() remoteUrl = 'http://localhost:4201/remoteEntry.json';
 
@@ -110,6 +113,7 @@ export class RemoteLoaderComponent implements OnInit {
   ngOnInit(): void {
     const data = this.route.snapshot.data;
     if (data['remoteName']) this.remoteName = data['remoteName'];
+    if (data['remoteVersion']) this.remoteVersion = data['remoteVersion'];
     if (data['exposedModule']) this.exposedModule = data['exposedModule'];
     if (data['remoteUrl']) this.remoteUrl = data['remoteUrl'];
 
@@ -150,13 +154,20 @@ export class RemoteLoaderComponent implements OnInit {
         }
       });
     } catch (err: any) {
-      console.warn(`[Shell] Failed to load remote "${this.remoteName}":`, err);
       this.isLoading.set(false);
       const msg = err?.message || 'Network error loading micro-frontend entry';
       this.errorMessage.set(msg);
 
+      this.errorReporter.captureException(err, {
+        remoteName: this.remoteName,
+        remoteVersion: this.remoteVersion,
+        url: this.remoteUrl,
+        tags: { phase: 'remote-load' },
+      });
+
       this.eventBus.dispatch('remote:error', {
         remoteName: this.remoteName,
+        remoteVersion: this.remoteVersion,
         error: msg,
         timestamp: Date.now(),
       });
