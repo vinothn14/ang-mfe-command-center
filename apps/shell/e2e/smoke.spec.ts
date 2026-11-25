@@ -55,18 +55,26 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
 
   test('theme toggle switches shell and propagates data-theme attribute', async ({ page }) => {
     const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.addInitScript(() => localStorage.clear());
     await page.goto('/');
     await assertAppRootNonEmpty(page);
 
     const html = page.locator('html');
-    const initialTheme = await html.getAttribute('data-theme');
+    await expect(html).toHaveAttribute('data-theme', 'dark');
 
-    // Click theme toggle button
+    // Wait for toggle button to be visible and enabled before clicking
     const themeBtn = page.locator('.theme-toggle');
+    await expect(themeBtn).toBeVisible();
+    await expect(themeBtn).toBeEnabled();
     await themeBtn.click();
 
-    const toggledTheme = await html.getAttribute('data-theme');
-    expect(toggledTheme).not.toBe(initialTheme);
+    // Web-first assertion auto-retries until Angular's effect() flushes data-theme
+    await expect(html).toHaveAttribute('data-theme', 'light');
+
+    // Verify toggling back to dark also works
+    await themeBtn.click();
+    await expect(html).toHaveAttribute('data-theme', 'dark');
 
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
