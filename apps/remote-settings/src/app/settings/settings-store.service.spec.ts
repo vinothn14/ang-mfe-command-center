@@ -22,19 +22,15 @@ describe('SettingsStoreService', () => {
     expect(store.notifications().emailAlerts).toBe(true);
   });
 
-  it('should dispatch theme:changed and settings:theme-changed when setTheme is called', () => {
+  it('should dispatch theme:changed when setTheme is called', () => {
     let capturedTheme: any = null;
-    let capturedSettingsEvent: any = null;
 
     eventBus.on('theme:changed').subscribe(val => (capturedTheme = val));
-    eventBus.on('settings:theme-changed').subscribe(val => (capturedSettingsEvent = val));
 
     store.setTheme('light');
 
     expect(store.theme()).toBe('light');
     expect(capturedTheme).toBe('light');
-    expect(capturedSettingsEvent.theme).toBe('light');
-    expect(capturedSettingsEvent.updatedBy).toBe(store.name());
   });
 
   it('should toggle notification settings correctly', () => {

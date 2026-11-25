@@ -22,6 +22,13 @@ export class ThemeService {
       }
       this.eventBus.dispatch('theme:changed', currentMode);
     });
+
+    // Sync theme changes initiated by remotes (e.g. remote-settings)
+    this.eventBus.on('theme:changed').subscribe(newMode => {
+      if (newMode !== this.mode()) {
+        this.mode.set(newMode);
+      }
+    });
   }
 
   toggleTheme(): void {

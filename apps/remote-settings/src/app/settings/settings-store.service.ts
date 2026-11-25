@@ -41,11 +41,6 @@ export class SettingsStoreService {
     this.theme.set(newTheme);
     // Propagate theme changes back to shell and all remotes via EventBus
     this.eventBus.dispatch('theme:changed', newTheme);
-    this.eventBus.dispatch('settings:theme-changed', {
-      theme: newTheme,
-      updatedBy: this.name(),
-      timestamp: Date.now(),
-    });
   }
 
   toggleNotification(key: keyof NotificationSettings): void {
@@ -58,11 +53,7 @@ export class SettingsStoreService {
   saveSettings(): void {
     this.isSaved.set(true);
     // Notify shell of theme update on save
-    this.eventBus.dispatch('settings:theme-changed', {
-      theme: this.theme(),
-      updatedBy: this.name(),
-      timestamp: Date.now(),
-    });
+    this.eventBus.dispatch('theme:changed', this.theme());
 
     setTimeout(() => {
       this.isSaved.set(false);
