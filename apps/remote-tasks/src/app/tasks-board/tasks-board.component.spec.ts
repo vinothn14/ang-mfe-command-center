@@ -4,7 +4,12 @@ import { TestBed } from '@angular/core/testing';
 import { TasksBoardComponent } from './tasks-board.component';
 import { TaskStoreService } from './task-store.service';
 import { EventBusService } from '@mfe/shared/event-bus';
-import { AUTH_READER_TOKEN, AuthReader, AuthState, INITIAL_AUTH_STATE } from '@mfe/shared/contracts';
+import {
+  AUTH_READER_TOKEN,
+  AuthReader,
+  AuthState,
+  INITIAL_AUTH_STATE,
+} from '@mfe/shared/contracts';
 
 describe('TasksBoardComponent', () => {
   let component: TasksBoardComponent;

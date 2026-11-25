@@ -22,10 +22,7 @@ describe('MfePulseWidget (Web Component)', () => {
 
     const adapter: EventBusAdapter = {
       subscribe: <K extends EventKey>(_event: K, _handler: (p: EventMap[K]) => void) => unsubMock,
-      subscribeWithReplay: <K extends EventKey>(
-        event: K,
-        handler: (p: EventMap[K]) => void,
-      ) => {
+      subscribeWithReplay: <K extends EventKey>(event: K, handler: (p: EventMap[K]) => void) => {
         if (event === 'task:created') {
           (handler as (p: EventMap['task:created']) => void)({
             id: 'TSK-1',

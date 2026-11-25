@@ -1,20 +1,7 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventBusService } from '@mfe/shared/event-bus';
-import {
-  ERROR_REPORTER_TOKEN,
-  EventBusAdapter,
-  EventKey,
-  EventMap,
-} from '@mfe/shared/contracts';
+import { ERROR_REPORTER_TOKEN, EventBusAdapter, EventKey, EventMap } from '@mfe/shared/contracts';
 import { RemoteFallbackComponent } from '../fallback/remote-fallback.component';
 
 interface PulseWidgetElement extends HTMLElement {

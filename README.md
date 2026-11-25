@@ -22,13 +22,13 @@
 
 ## 🌐 Live Demo (Vercel Placeholders)
 
-| Application | Role | Planned Production URL |
-| :--- | :--- | :--- |
-| **Shell (Host)** | Orchestrator | `https://<mfe-shell>.vercel.app` |
-| **Remote Tasks** | Angular MFE | `https://<mfe-remote-tasks>.vercel.app` |
-| **Remote Analytics** | Angular MFE | `https://<mfe-remote-analytics>.vercel.app` |
-| **Remote Settings** | Angular MFE | `https://<mfe-remote-settings>.vercel.app` |
-| **Remote Widget** | Web Component MFE | `https://<mfe-remote-widget>.vercel.app` |
+| Application          | Role              | Planned Production URL                      |
+| :------------------- | :---------------- | :------------------------------------------ |
+| **Shell (Host)**     | Orchestrator      | `https://<mfe-shell>.vercel.app`            |
+| **Remote Tasks**     | Angular MFE       | `https://<mfe-remote-tasks>.vercel.app`     |
+| **Remote Analytics** | Angular MFE       | `https://<mfe-remote-analytics>.vercel.app` |
+| **Remote Settings**  | Angular MFE       | `https://<mfe-remote-settings>.vercel.app`  |
+| **Remote Widget**    | Web Component MFE | `https://<mfe-remote-widget>.vercel.app`    |
 
 ---
 
@@ -124,18 +124,18 @@ Micro-frontend architecture delivers immense agility for the right organizationa
 
 ## 📦 Tech Stack
 
-| Technology | Selection | Architecture Justification |
-| :--- | :--- | :--- |
-| **Framework** | Angular 22 (Latest) | Standalone components, Signal-based reactivity, signal forms, and control flow syntax (`@if`, `@for`). |
-| **Federation Engine** | `@angular-architects/native-federation` ^22.2.5 | Native ESM + Import Maps standard. Decouples micro-frontends from Webpack and compiles natively through `@angular/build:application` (esbuild). |
-| **Cross-Framework Remote** | Plain Web Component + Vite (`apps/remote-widget`) | Demonstrates framework-agnostic Custom Element + Shadow DOM integration on `/widget` without Angular runtime coupling. |
-| **Monorepo Engine** | Nx 24 | High-performance dependency graph, project isolation, task caching, and `nx affected` CI execution. |
-| **Linter & Rules** | ESLint 9 + `angular-eslint` + `@nx/eslint` | Strict architectural boundaries (`@nx/enforce-module-boundaries`): remotes never import from each other or shell; only from `libs/shared/*`. |
-| **Unit Testing** | Vitest 4 + `@analogjs/vite-plugin-angular` | Fast Vite/jsdom testing environment with native TypeScript execution. |
-| **E2E Smoke Testing** | Playwright 1.65 | Headless smoke suite covering shell navigation, theme switching, role guards, Web Component mounting, zero console errors, and fallback resilience. |
-| **Design System** | SCSS Tokens (`libs/shared/ui-tokens`) | Zero third-party UI library bloat. Custom CSS custom properties with light/dark theme toggle support. |
-| **Inter-MFE Bus** | `@mfe/shared/event-bus` | Decoupled typed pub/sub bus with `ReplaySubject` buffer for late-mounted remotes, shared as a Native Federation singleton. |
-| **Observability** | `ERROR_REPORTER_TOKEN` (`@mfe/shared/contracts`) | Vendor-agnostic `ErrorReporter` interface with `ConsoleErrorReporter` default (Sentry-ready, zero vendor lock-in). |
+| Technology                 | Selection                                         | Architecture Justification                                                                                                                          |
+| :------------------------- | :------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**              | Angular 22 (Latest)                               | Standalone components, Signal-based reactivity, signal forms, and control flow syntax (`@if`, `@for`).                                              |
+| **Federation Engine**      | `@angular-architects/native-federation` ^22.2.5   | Native ESM + Import Maps standard. Decouples micro-frontends from Webpack and compiles natively through `@angular/build:application` (esbuild).     |
+| **Cross-Framework Remote** | Plain Web Component + Vite (`apps/remote-widget`) | Demonstrates framework-agnostic Custom Element + Shadow DOM integration on `/widget` without Angular runtime coupling.                              |
+| **Monorepo Engine**        | Nx 24                                             | High-performance dependency graph, project isolation, task caching, and `nx affected` CI execution.                                                 |
+| **Linter & Rules**         | ESLint 9 + `angular-eslint` + `@nx/eslint`        | Strict architectural boundaries (`@nx/enforce-module-boundaries`): remotes never import from each other or shell; only from `libs/shared/*`.        |
+| **Unit Testing**           | Vitest 4 + `@analogjs/vite-plugin-angular`        | Fast Vite/jsdom testing environment with native TypeScript execution.                                                                               |
+| **E2E Smoke Testing**      | Playwright 1.65                                   | Headless smoke suite covering shell navigation, theme switching, role guards, Web Component mounting, zero console errors, and fallback resilience. |
+| **Design System**          | SCSS Tokens (`libs/shared/ui-tokens`)             | Zero third-party UI library bloat. Custom CSS custom properties with light/dark theme toggle support.                                               |
+| **Inter-MFE Bus**          | `@mfe/shared/event-bus`                           | Decoupled typed pub/sub bus with `ReplaySubject` buffer for late-mounted remotes, shared as a Native Federation singleton.                          |
+| **Observability**          | `ERROR_REPORTER_TOKEN` (`@mfe/shared/contracts`)  | Vendor-agnostic `ErrorReporter` interface with `ConsoleErrorReporter` default (Sentry-ready, zero vendor lock-in).                                  |
 
 ---
 
@@ -226,15 +226,15 @@ npm run start:remote-widget     # http://localhost:4204
 
 ### 3. Command Center Navigation
 
-| Route | Micro-Frontend Loaded | Description |
-| :--- | :--- | :--- |
-| **`/`** | Host Shell | System cluster overview, cluster health cards, real-time EventBus feed |
-| **`/tasks`** | `remote-tasks` | Kanban task management board (role-sensitive) |
-| **`/analytics`** | `remote-analytics` | Real-time task throughput and status distribution charts |
-| **`/settings`** | `remote-settings` | User profile, notification preferences, and theme synchronization |
-| **`/widget`** | `remote-widget` | Framework-agnostic Web Component (`<mfe-pulse-widget>`) via `EventBusAdapter` |
-| **`/access-denied`** | Host Shell | Route guard fallback when role is restricted (e.g. `viewer`) |
-| **`/missing-remote`** | Host Shell | Resilient fallback boundary demonstration |
+| Route                 | Micro-Frontend Loaded | Description                                                                   |
+| :-------------------- | :-------------------- | :---------------------------------------------------------------------------- |
+| **`/`**               | Host Shell            | System cluster overview, cluster health cards, real-time EventBus feed        |
+| **`/tasks`**          | `remote-tasks`        | Kanban task management board (role-sensitive)                                 |
+| **`/analytics`**      | `remote-analytics`    | Real-time task throughput and status distribution charts                      |
+| **`/settings`**       | `remote-settings`     | User profile, notification preferences, and theme synchronization             |
+| **`/widget`**         | `remote-widget`       | Framework-agnostic Web Component (`<mfe-pulse-widget>`) via `EventBusAdapter` |
+| **`/access-denied`**  | Host Shell            | Route guard fallback when role is restricted (e.g. `viewer`)                  |
+| **`/missing-remote`** | Host Shell            | Resilient fallback boundary demonstration                                     |
 
 ---
 
@@ -279,15 +279,15 @@ Create each project manually in the Vercel Dashboard pointing to the same Git re
 > [!IMPORTANT]
 > **Enable "Include source files outside of the Root Directory"** in **Project Settings → General** for all 5 projects so Nx can resolve `libs/shared/*`, `tsconfig.base.json`, `nx.json`, and root `package.json`.
 
-| Vercel Project | Root Directory | Install Command | Build Command | Output Directory | Ignored Build Step |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **`mfe-shell`** | `apps/shell` | `npm ci` | `cd ../.. && npx nx build shell` | `../../dist/apps/shell/browser` | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
-| **`mfe-remote-tasks`** | `apps/remote-tasks` | `npm ci` | `cd ../.. && npx nx build remote-tasks` | `../../dist/apps/remote-tasks/browser` | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
-| **`mfe-remote-analytics`** | `apps/remote-analytics` | `npm ci` | `cd ../.. && npx nx build remote-analytics` | `../../dist/apps/remote-analytics/browser` | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
-| **`mfe-remote-settings`** | `apps/remote-settings` | `npm ci` | `cd ../.. && npx nx build remote-settings` | `../../dist/apps/remote-settings/browser` | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
-| **`mfe-remote-widget`** | `apps/remote-widget` | `npm ci` | `cd ../.. && npx nx build remote-widget` | `../../dist/apps/remote-widget/browser` | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
+| Vercel Project             | Root Directory          | Install Command | Build Command                               | Output Directory                           | Ignored Build Step                                   |
+| :------------------------- | :---------------------- | :-------------- | :------------------------------------------ | :----------------------------------------- | :--------------------------------------------------- |
+| **`mfe-shell`**            | `apps/shell`            | `npm ci`        | `cd ../.. && npx nx build shell`            | `../../dist/apps/shell/browser`            | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
+| **`mfe-remote-tasks`**     | `apps/remote-tasks`     | `npm ci`        | `cd ../.. && npx nx build remote-tasks`     | `../../dist/apps/remote-tasks/browser`     | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
+| **`mfe-remote-analytics`** | `apps/remote-analytics` | `npm ci`        | `cd ../.. && npx nx build remote-analytics` | `../../dist/apps/remote-analytics/browser` | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
+| **`mfe-remote-settings`**  | `apps/remote-settings`  | `npm ci`        | `cd ../.. && npx nx build remote-settings`  | `../../dist/apps/remote-settings/browser`  | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
+| **`mfe-remote-widget`**    | `apps/remote-widget`    | `npm ci`        | `cd ../.. && npx nx build remote-widget`    | `../../dist/apps/remote-widget/browser`    | `git diff HEAD^ HEAD --quiet -- . ../../libs/shared` |
 
-*(If your Vercel domain for `shell` differs from `https://mfe-shell.vercel.app`, update `Access-Control-Allow-Origin` in each remote's `vercel.json` and the remote URLs in `apps/shell/public/federation.manifest.prod.json`.)*
+_(If your Vercel domain for `shell` differs from `https://mfe-shell.vercel.app`, update `Access-Control-Allow-Origin` in each remote's `vercel.json` and the remote URLs in `apps/shell/public/federation.manifest.prod.json`.)_
 
 ### Vercel Preview Deployments Behavior & Limitations
 

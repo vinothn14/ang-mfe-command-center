@@ -1,6 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 
-async function attachErrorCollectors(page: Page): Promise<{ consoleErrors: string[]; pageErrors: string[] }> {
+async function attachErrorCollectors(
+  page: Page,
+): Promise<{ consoleErrors: string[]; pageErrors: string[] }> {
   const consoleErrors: string[] = [];
   const pageErrors: string[] = [];
 
@@ -26,7 +28,9 @@ async function assertAppRootNonEmpty(page: Page): Promise<void> {
 }
 
 test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
-  test('shell root loads successfully and renders children into app-root with zero console errors', async ({ page }) => {
+  test('shell root loads successfully and renders children into app-root with zero console errors', async ({
+    page,
+  }) => {
     const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/');
 
@@ -82,7 +86,9 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     expect(pageErrors).toEqual([]);
   });
 
-  test('navigates to and renders Remote Analytics MFE with zero console errors', async ({ page }) => {
+  test('navigates to and renders Remote Analytics MFE with zero console errors', async ({
+    page,
+  }) => {
     const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/analytics');
     await assertAppRootNonEmpty(page);
@@ -98,7 +104,9 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     expect(pageErrors).toEqual([]);
   });
 
-  test('navigates to and renders Remote Settings MFE for authorized roles with zero console errors', async ({ page }) => {
+  test('navigates to and renders Remote Settings MFE for authorized roles with zero console errors', async ({
+    page,
+  }) => {
     const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/settings');
     await assertAppRootNonEmpty(page);
@@ -114,7 +122,9 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
     expect(pageErrors).toEqual([]);
   });
 
-  test('navigates to and renders Remote Widget Web Component MFE with zero console errors', async ({ page }) => {
+  test('navigates to and renders Remote Widget Web Component MFE with zero console errors', async ({
+    page,
+  }) => {
     const { consoleErrors, pageErrors } = await attachErrorCollectors(page);
     await page.goto('/widget');
     await assertAppRootNonEmpty(page);
@@ -128,11 +138,7 @@ test.describe('Shell Micro-Frontend Smoke & Resilience Suite', () => {
   });
 
   test('standalone remotes render non-empty root with zero console errors', async ({ page }) => {
-    const remoteUrls = [
-      'http://localhost:4201',
-      'http://localhost:4202',
-      'http://localhost:4203',
-    ];
+    const remoteUrls = ['http://localhost:4201', 'http://localhost:4202', 'http://localhost:4203'];
 
     for (const url of remoteUrls) {
       const { consoleErrors, pageErrors } = await attachErrorCollectors(page);

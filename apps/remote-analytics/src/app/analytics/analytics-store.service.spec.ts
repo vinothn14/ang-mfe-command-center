@@ -79,10 +79,7 @@ describe('AnalyticsStoreService', () => {
 
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      providers: [
-        AnalyticsStoreService,
-        { provide: EventBusService, useValue: freshBus },
-      ],
+      providers: [AnalyticsStoreService, { provide: EventBusService, useValue: freshBus }],
     });
 
     const lateStore = TestBed.inject(AnalyticsStoreService);
