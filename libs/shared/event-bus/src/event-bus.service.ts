@@ -1,5 +1,5 @@
 import { Injectable, signal, Signal } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { EventKey, EventMap } from '@mfe/shared/contracts';
 
@@ -8,6 +8,8 @@ interface BusEnvelope<K extends EventKey = EventKey> {
   payload: EventMap[K];
   timestamp: number;
 }
+
+const REPLAY_BUFFER_SIZE = 100;
 
 /**
  * Enterprise Micro-Frontend Cross-Remote Typed Event Bus.
@@ -19,24 +21,38 @@ interface BusEnvelope<K extends EventKey = EventKey> {
   providedIn: 'root',
 })
 export class EventBusService {
-  private readonly stream$ = new Subject<BusEnvelope<any>>();
+  private readonly stream$ = new Subject<BusEnvelope<EventKey>>();
+  private readonly replayStream$ = new ReplaySubject<BusEnvelope<EventKey>>(REPLAY_BUFFER_SIZE);
 
   /**
    * Dispatches a strongly-typed event onto the bus.
    */
   dispatch<K extends EventKey>(event: K, payload: EventMap[K]): void {
-    this.stream$.next({
+    const envelope: BusEnvelope<K> = {
       key: event,
       payload,
       timestamp: Date.now(),
-    });
+    };
+    this.stream$.next(envelope);
+    this.replayStream$.next(envelope);
   }
 
   /**
-   * Listens to a strongly-typed event stream as an RxJS Observable.
+   * Listens to a strongly-typed event stream as an RxJS Observable (live events only).
    */
   on<K extends EventKey>(event: K): Observable<EventMap[K]> {
     return this.stream$.asObservable().pipe(
+      filter((envelope): envelope is BusEnvelope<K> => envelope.key === event),
+      map(envelope => envelope.payload),
+    );
+  }
+
+  /**
+   * Listens to a strongly-typed event stream with replay of recent buffered events.
+   * Useful for lazy-loaded remotes mounted after events were already dispatched.
+   */
+  onWithReplay<K extends EventKey>(event: K): Observable<EventMap[K]> {
+    return this.replayStream$.asObservable().pipe(
       filter((envelope): envelope is BusEnvelope<K> => envelope.key === event),
       map(envelope => envelope.payload),
     );

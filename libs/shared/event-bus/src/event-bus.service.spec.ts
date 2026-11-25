@@ -45,4 +45,26 @@ describe('EventBusService', () => {
     eventBus.dispatch('theme:changed', 'light');
     expect(themeSignal()).toBe('light');
   });
+
+  it('should replay buffered events to late subscribers via onWithReplay()', () => {
+    eventBus.dispatch('task:created', {
+      id: 'TSK-777',
+      title: 'Pre-mount task',
+      description: 'Created before analytics mounted',
+      status: 'todo',
+      priority: 'high',
+      assignee: { name: 'Alex Rivera', avatarUrl: '' },
+      tags: ['Replay'],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    const received: string[] = [];
+    const sub = eventBus.onWithReplay('task:created').subscribe(task => {
+      received.push(task.id);
+    });
+
+    expect(received).toEqual(['TSK-777']);
+    sub.unsubscribe();
+  });
 });

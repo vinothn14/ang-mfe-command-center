@@ -56,4 +56,39 @@ describe('AnalyticsStoreService', () => {
     const updatedThroughput = store.throughput()[store.throughput().length - 1].completed;
     expect(updatedThroughput).toBe(initialThroughput + 1);
   });
+
+  it('should replay tasks created before AnalyticsStoreService was instantiated', () => {
+    const freshBus = new EventBusService();
+    freshBus.dispatch('task:created', {
+      id: 'TSK-888',
+      title: 'Created Before Analytics Opened',
+      description: 'Replay test',
+      status: 'todo',
+      priority: 'critical',
+      assignee: { name: 'Alex Rivera', avatarUrl: '' },
+      tags: ['Replay'],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+    freshBus.dispatch('task:status-changed', {
+      taskId: 'TSK-888',
+      oldStatus: 'todo',
+      newStatus: 'done',
+      timestamp: Date.now(),
+    });
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        AnalyticsStoreService,
+        { provide: EventBusService, useValue: freshBus },
+      ],
+    });
+
+    const lateStore = TestBed.inject(AnalyticsStoreService);
+    expect(lateStore.statusCounts().done).toBe(23);
+    expect(
+      lateStore.activities().some(a => a.description.includes('Created Before Analytics Opened')),
+    ).toBe(true);
+  });
 });

@@ -77,9 +77,9 @@ export class AnalyticsStoreService implements OnDestroy {
   }
 
   private listenToCrossRemoteEvents(): void {
-    // React to tasks created in remote-tasks
+    // React to tasks created in remote-tasks (including replayed events from before mount)
     this.sub.add(
-      this.eventBus.on('task:created').subscribe(task => {
+      this.eventBus.onWithReplay('task:created').subscribe(task => {
         this.statusCounts.update(curr => ({
           ...curr,
           todo: curr.todo + 1,
@@ -94,9 +94,9 @@ export class AnalyticsStoreService implements OnDestroy {
       }),
     );
 
-    // React to task status transitions in remote-tasks
+    // React to task status transitions in remote-tasks (including replayed events)
     this.sub.add(
-      this.eventBus.on('task:status-changed').subscribe(event => {
+      this.eventBus.onWithReplay('task:status-changed').subscribe(event => {
         this.statusCounts.update(curr => {
           const updated = { ...curr };
           if (updated[event.oldStatus] > 0) {
